@@ -1,4 +1,9 @@
 package br.com.facilitareabi.model;
+
+import br.com.facilitareabi.enums.StatusConsultaEnum;
+
+import java.time.LocalDate;
+
 public class Usuario {
     //atributtes
     private int id;
@@ -25,6 +30,8 @@ public class Usuario {
         this.senha = senha;
         this.feedback = feedback;
     }
+
+
 
     //getters e setters
     public int getId() {

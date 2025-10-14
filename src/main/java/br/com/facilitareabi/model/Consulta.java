@@ -1,5 +1,7 @@
 package br.com.facilitareabi.model;
 
+import br.com.facilitareabi.enums.StatusConsultaEnum;
+
 import java.time.LocalDate;
 
 public class Consulta  {
@@ -21,6 +23,22 @@ public class Consulta  {
         this.especializacao = especializacao;
         this.paciente = paciente;
     }
+
+    public Consulta(LocalDate dataConsulta, StatusConsultaEnum statusConsulta, String motivoFalta, String especializacao, Paciente paciente) {
+        this.dataConsulta = dataConsulta;
+        StatusConsulta = statusConsulta;
+        this.motivoFalta = motivoFalta;
+        this.especializacao = especializacao;
+        this.paciente = paciente;
+    }
+
+    public Consulta(LocalDate dataConsulta, StatusConsultaEnum statusConsulta, String especializacao, Paciente paciente) {
+        this.dataConsulta = dataConsulta;
+        StatusConsulta = statusConsulta;
+        this.especializacao = especializacao;
+        this.paciente = paciente;
+    }
+
     //Getters e setters
     public int getId() {
         return id;
