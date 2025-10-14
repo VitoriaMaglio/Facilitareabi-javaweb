@@ -1,8 +1,8 @@
 package br.com.facilitareabi.dao;
 
-import br.facilitareabi.com.enums.StatusConsultaEnum;
-import br.facilitareabi.com.model.Consulta;
-import br.facilitareabi.com.model.Paciente;
+import br.com.facilitareabi.enums.StatusConsultaEnum;
+import br.com.facilitareabi.model.Consulta;
+import br.com.facilitareabi.model.Paciente;
 
 import java.sql.*;
 import java.time.LocalDate;

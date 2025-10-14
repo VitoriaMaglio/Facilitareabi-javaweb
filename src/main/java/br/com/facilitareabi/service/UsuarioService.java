@@ -1,6 +1,6 @@
 package br.com.facilitareabi.service;
-import br.facilitareabi.com.dao.UsuarioDao;
-import br.facilitareabi.com.model.Usuario;
+import br.com.facilitareabi.dao.UsuarioDao;
+import br.com.facilitareabi.model.Usuario;
 public class UsuarioService {
     private UsuarioDao usuarioDao = new UsuarioDao();
     public boolean verificarUsuario(Usuario usuario){

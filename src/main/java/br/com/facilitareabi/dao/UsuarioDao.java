@@ -1,6 +1,6 @@
 package br.com.facilitareabi.dao;
 
-import br.facilitareabi.com.model.Usuario;
+import br.com.facilitareabi.model.Usuario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

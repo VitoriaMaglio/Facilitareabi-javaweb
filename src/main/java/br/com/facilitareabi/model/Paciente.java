@@ -26,6 +26,28 @@ public class Paciente {
         this.vulnerabilidade = vulnerabilidade;
         this.aptidao = aptidao;
     }
+
+    public Paciente(String nome, String cpf, LocalDate dataNascimento, String telefone, String email, String vulnerabilidade, String aptidao) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.dataNascimento = dataNascimento;
+        this.telefone = telefone;
+        this.email = email;
+        this.vulnerabilidade = vulnerabilidade;
+        this.aptidao = aptidao;
+    }
+
+    public Paciente(String nome, String cpf, String vulnerabilidade, String aptidao) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.vulnerabilidade = vulnerabilidade;
+        this.aptidao = aptidao;
+    }
+
+    public Paciente(int id_paciente) {
+        this.id_paciente = id_paciente;
+    }
+
     //Getters e setters
     public int getId_paciente() {return id_paciente;}
     public void setId_paciente(int id_paciente) {this.id_paciente = id_paciente;}

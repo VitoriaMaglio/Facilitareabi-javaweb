@@ -1,8 +1,8 @@
 package br.com.facilitareabi.resource;
 
-import br.facilitareabi.com.dao.UsuarioDao;
-import br.facilitareabi.com.model.Usuario;
-import br.facilitareabi.com.service.UsuarioService;
+import br.com.facilitareabi.dao.UsuarioDao;
+import br.com.facilitareabi.model.Usuario;
+import br.com.facilitareabi.service.UsuarioService;
 
 import java.util.Scanner;
 public class UsuarioResource {

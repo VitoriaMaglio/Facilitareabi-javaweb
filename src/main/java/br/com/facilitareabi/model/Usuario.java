@@ -14,6 +14,18 @@ public class Usuario {
         this.senha = senha;
         this.feedback = feedback;
     }
+
+    public Usuario(String login, String feedback) {
+        this.login = login;
+        this.feedback = feedback;
+    }
+
+    public Usuario(String login, String senha, String feedback) {
+        this.login = login;
+        this.senha = senha;
+        this.feedback = feedback;
+    }
+
     //getters e setters
     public int getId() {
         return id;

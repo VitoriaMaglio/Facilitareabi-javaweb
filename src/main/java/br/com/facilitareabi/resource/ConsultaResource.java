@@ -1,11 +1,11 @@
 package br.com.facilitareabi.resource;
 
-import br.facilitareabi.com.dao.ConsultaDao;
-import br.facilitareabi.com.enums.StatusConsultaEnum;
-import br.facilitareabi.com.model.Consulta;
-import br.facilitareabi.com.model.Paciente;
-import br.facilitareabi.com.service.ConsultaService;
-import br.facilitareabi.com.service.ConsultaServiceImpl;
+import br.com.facilitareabi.dao.ConsultaDao;
+import br.com.facilitareabi.enums.StatusConsultaEnum;
+import br.com.facilitareabi.model.Consulta;
+import br.com.facilitareabi.model.Paciente;
+import br.com.facilitareabi.service.ConsultaService;
+import br.com.facilitareabi.service.ConsultaServiceImpl;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
