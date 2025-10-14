@@ -29,7 +29,7 @@ public class ConsultaResource {
 
 
     @POST
-    @Path("/cadastroconsulta")
+    @Path("/cadastro/consulta")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response cadastrarConsulta(ConsultaRequest consultaRequest){

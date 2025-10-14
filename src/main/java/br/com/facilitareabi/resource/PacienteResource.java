@@ -28,7 +28,7 @@ public class PacienteResource {
 
     //Criando métodos http
     @POST
-    @Path("/cadastropaci")
+    @Path("/cadastro/paciente")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response cadastrarPaciente(PacienteRequest request) {

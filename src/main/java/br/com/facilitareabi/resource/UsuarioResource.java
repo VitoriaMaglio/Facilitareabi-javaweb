@@ -1,19 +1,18 @@
 package br.com.facilitareabi.resource;
 
 import br.com.facilitareabi.dao.UsuarioDao;
+import br.com.facilitareabi.dto.UsuarioLoginDto;
 import br.com.facilitareabi.dto.UsuarioRequest;
 import br.com.facilitareabi.dto.UsuarioResponse;
 import br.com.facilitareabi.model.Usuario;
 import br.com.facilitareabi.service.UsuarioService;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.awt.*;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 @Path("usuarios")
 public class UsuarioResource {
@@ -23,8 +22,10 @@ public class UsuarioResource {
 
 
     //Criando métodos http
+
+    //registrar um novo usuário no sistema
+
     @POST
-    @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response cadastrarUsuario(UsuarioRequest request) {
@@ -43,6 +44,38 @@ public class UsuarioResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    //processo de autenticação;verifica as credenciais (login e senha) de um usuário já cadastrado.
+
+    @POST
+    @Path("/login")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login (UsuarioLoginDto usuario){
+        try {
+            String mensagem = usuarioService.autenticarUsuario(usuario);
+
+            if(mensagem.equals("Usuário logado com sucesso")){
+                return Response.ok().entity(mensagem).build();
+            }
+            else if(mensagem.equals( "Usuário e/ou senha inválidos")){
+                return Response.status(Response.Status.UNAUTHORIZED)
+                        .entity(mensagem)
+                        .build();
+            }
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao autenticar usuário  " + e.getMessage())
+                    .build();
+        }
+        return null;
+    }
+
+
+
+
+
+
 
 
 

@@ -99,4 +99,10 @@ public class UsuarioDao {
             throw new RuntimeException("Erro ao excluir usuário: " + e.getMessage(), e);
         }
     }
+
+    public String autenticarUsuario(Usuario usuario) {
+        return null;
+    }
+
+
 }
