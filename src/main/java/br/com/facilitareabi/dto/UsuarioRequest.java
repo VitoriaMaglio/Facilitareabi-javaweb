@@ -51,7 +51,7 @@ public class UsuarioRequest {
     }
 
     //Método conversão de dto para usuario
-    public Usuario convertDtoToUsuario(UsuarioRequest dto){
+    public Usuario convertToUsuario(UsuarioRequest dto){
         return new Usuario( dto.login, dto.senha, dto.feedback);
     }
 
