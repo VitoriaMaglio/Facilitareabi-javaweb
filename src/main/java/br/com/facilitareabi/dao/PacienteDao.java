@@ -1,6 +1,6 @@
 package br.com.facilitareabi.dao;
 
-import br.facilitareabi.com.model.Paciente;
+import br.com.facilitareabi.model.Paciente;
 
 import java.sql.*;
 import java.util.ArrayList;

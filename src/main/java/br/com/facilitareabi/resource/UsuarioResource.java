@@ -15,7 +15,7 @@ import jakarta.ws.rs.core.Response;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.Scanner;
-
+@Path("usuarios")
 public class UsuarioResource {
     private UsuarioService usuarioService = new UsuarioService();
     Usuario usuario = new Usuario();
@@ -43,6 +43,10 @@ public class UsuarioResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+
+
+
 
 
 

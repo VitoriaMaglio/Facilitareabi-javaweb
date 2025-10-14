@@ -23,6 +23,38 @@ public class PacienteResponse {
         this.aptidao = aptidao;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getVulnerabilidade() {
+        return vulnerabilidade;
+    }
+
+    public void setVulnerabilidade(String vulnerabilidade) {
+        this.vulnerabilidade = vulnerabilidade;
+    }
+
+    public String getAptidao() {
+        return aptidao;
+    }
+
+    public void setAptidao(String aptidao) {
+        this.aptidao = aptidao;
+    }
+
     //Método converter paciente para pacientedto
     public PacienteResponse convertToPacienteDto(Paciente paciente){
         return new PacienteResponse(paciente.getNome(), paciente.getCpf(),paciente.getVulnerabilidade(), paciente.getAptidao());

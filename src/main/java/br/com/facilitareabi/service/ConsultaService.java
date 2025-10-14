@@ -1,13 +1,17 @@
 package br.com.facilitareabi.service;
-import br.facilitareabi.com.dao.ConsultaDao;
-import br.facilitareabi.com.model.Consulta;
-import br.facilitareabi.com.model.Paciente;
+import br.com.facilitareabi.dao.ConsultaDao;
+import br.com.facilitareabi.dto.ConsultaRequest;
+import br.com.facilitareabi.dto.ConsultaResponse;
+import br.com.facilitareabi.model.Consulta;
+import br.com.facilitareabi.model.Paciente;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 public interface ConsultaService {
     boolean verificarAptoParaConsulta(Paciente paciente);
     void remarcarConsulta(Consulta consulta, LocalDate novaData, String motivoFalta);
     void cancelarConsulta(Consulta consulta, String motivoFalta);
     ConsultaDao consultaDao = new ConsultaDao();
-    void cadastrarConsulta(Consulta consulta);
+    ConsultaResponse buscarPorData(LocalDate data) throws SQLException;
+    void cadastrarConsulta(ConsultaRequest consultaRequest);
 }

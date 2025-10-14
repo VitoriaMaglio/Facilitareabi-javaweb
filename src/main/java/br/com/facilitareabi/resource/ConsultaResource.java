@@ -1,21 +1,53 @@
 package br.com.facilitareabi.resource;
 
 import br.com.facilitareabi.dao.ConsultaDao;
+import br.com.facilitareabi.dto.ConsultaRequest;
+import br.com.facilitareabi.dto.ConsultaResponse;
 import br.com.facilitareabi.enums.StatusConsultaEnum;
 import br.com.facilitareabi.model.Consulta;
 import br.com.facilitareabi.model.Paciente;
 import br.com.facilitareabi.service.ConsultaService;
 import br.com.facilitareabi.service.ConsultaServiceImpl;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
+@Path("/consultas")
 public class ConsultaResource {
     private ConsultaService consultaService = new ConsultaServiceImpl();
-    private Scanner scanner = new Scanner(System.in);
+
     Scanner leitor = new Scanner(System.in);
     Consulta consulta = new Consulta();
+
+
+    @POST
+    @Path("/cadastroconsulta")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response cadastrarConsulta(ConsultaRequest consultaRequest){
+        try{
+            consultaService.cadastrarConsulta(consultaRequest);
+            ConsultaResponse consultaCadastrada = consultaService.buscarPorData(consulta.getDataConsulta());
+            if(consultaCadastrada.getDataConsulta().isEqual(consulta.getDataConsulta())){
+                return Response.status(Response.Status.CREATED).build();
+            }else{
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            }
+        }catch (SQLException e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
+
     public void verificarPaciente(Paciente paciente) {
         if (consultaService.verificarAptoParaConsulta(paciente)) {
             System.out.println("Paciente apto para teleconsulta.");
