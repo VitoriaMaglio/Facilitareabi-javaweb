@@ -40,9 +40,10 @@ public class ConsultaServiceImpl implements ConsultaService {
         consultaDao.cadastrarConsulta(consultaRequest.convertDtoToConsulta(consultaRequest));
     }
 
-    @Override
-    public void cadastrarConsulta(Consulta consulta) {
-        consultaDao.cadastrarConsulta(consulta);
-        System.out.println("Consulta cadastrada com sucesso!");
-    }}
+//    @Override
+//    public void cadastrarConsulta(Consulta consulta) {
+//        consultaDao.cadastrarConsulta(consulta);
+//        System.out.println("Consulta cadastrada com sucesso!");
+//    }
+}
 

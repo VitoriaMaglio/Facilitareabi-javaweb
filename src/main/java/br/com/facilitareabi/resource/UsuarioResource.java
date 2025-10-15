@@ -17,7 +17,7 @@ import java.util.Scanner;
 @Path("usuarios")
 public class UsuarioResource {
     private UsuarioService usuarioService = new UsuarioService();
-    Usuario usuario = new Usuario();
+    //Usuario usuario = new Usuario();
     UsuarioDao usuarioDao = new UsuarioDao();
 
 
@@ -32,9 +32,9 @@ public class UsuarioResource {
         try {
             usuarioService.cadastrarUsuario(request);//chama o service resp por salvar no banco de dados
 
-            UsuarioResponse cadastrado = usuarioService.buscarLogin(usuario.getLogin());
+            UsuarioResponse cadastrado = usuarioService.buscarLogin(request.getLogin());
             //busca no banco o usuário para confirmar se foi salvo
-            if (cadastrado.getLogin().equals(usuario.getLogin())) {
+            if (cadastrado.getLogin().equals(request.getLogin())) {
                 //verifica se o nome do usuário retornado do banc é igual ao q foi enviado
                 return Response.status(Response.Status.CREATED).build();
             } else {
@@ -70,6 +70,43 @@ public class UsuarioResource {
         }
         return null;
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response listarUsuarios() {
+        try {
+            List<UsuarioResponse> usuarios = usuarioService.listarUsuarios();
+            return Response.ok(usuarios).build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"erro\": \"Erro ao listar usuários: " + e.getMessage() + "\"}")
+                    .build();
+        }
+    }
+
+    @GET
+    @Path("/{login}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response buscarUsuarioPorId(@PathParam("login") String login) {
+        try {
+            UsuarioResponse usuario = usuarioService.buscarLogin(login);
+
+            if (usuario != null) {
+                return Response.ok(usuario).build();
+            } else {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity("{\"erro\": \"Usuário não encontrado\"}")
+                        .build();
+            }
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"erro\": \"Erro ao buscar usuário: " + e.getMessage() + "\"}")
+                    .build();
+        }
+    }
+
+
+
 
 
 

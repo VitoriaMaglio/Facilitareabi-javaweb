@@ -15,6 +15,8 @@ public class UsuarioResponse {
         this.feedback = feedback;
     }
 
+
+
     public String getLogin() {
         return login;
     }

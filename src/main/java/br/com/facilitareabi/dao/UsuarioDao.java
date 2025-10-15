@@ -6,15 +6,24 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class UsuarioDao {
+
+    private Connection conn;
+    public UsuarioDao() {
+        this.conn = ConnectionFactory.obterConexao();
+    }
+
     public void cadastrarUsuario(Usuario usuario) {
         String sql = "INSERT INTO usuario (id, login, senha) VALUES (usuario_seq.NEXTVAL, ?, ?)";
-        try (Connection conexao = ConnectionFactory.obterConexao();
-             PreparedStatement ps = conexao.prepareStatement(sql)) {
+        try (
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, usuario.getLogin());
             ps.setString(2, usuario.getSenha());
             ps.executeUpdate();
-            try (PreparedStatement psId = conexao.prepareStatement("SELECT usuario_seq.CURRVAL FROM dual");
+            try (PreparedStatement psId = conn.prepareStatement("SELECT usuario_seq.CURRVAL FROM dual");
                  ResultSet rs = psId.executeQuery()) {
                 if (rs.next()) {
                     usuario.setId(rs.getInt(1));
@@ -27,7 +36,7 @@ public class UsuarioDao {
     }
     public Usuario buscarLogin(String login) {
         String sql = "SELECT * FROM USUARIO WHERE LOGIN = ?";
-        try (Connection conn = ConnectionFactory.obterConexao();
+        try (
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, login);
             ResultSet rs = ps.executeQuery();
@@ -44,10 +53,32 @@ public class UsuarioDao {
         }
         return null;
     }
+
+    public List<Usuario> listarUsuarios() throws SQLException {
+        List<Usuario> usuarios = new ArrayList<>();
+        String sql = "SELECT * FROM usuario";
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Usuario u = new Usuario();
+            u.setId(rs.getInt("id"));
+            u.setLogin(rs.getString("login"));
+
+            u.setFeedback(rs.getString("Feedback"));
+
+            usuarios.add(u);
+        }
+        rs.close();
+        ps.close();
+        return usuarios;
+    }
+
     public void atualizarFeedback(int idUsuario, String feedback) {
         String sql = "UPDATE usuario SET feedback = ? WHERE id = ?";
-        try (Connection conexao = ConnectionFactory.obterConexao();
-             PreparedStatement ps = conexao.prepareStatement(sql)) {
+        try (
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, feedback);
             ps.setInt(2, idUsuario);
             ps.executeUpdate();
@@ -58,8 +89,8 @@ public class UsuarioDao {
     }
     public void alterarUsuario(Usuario usuario){
         String sql = "UPDATE USUARIO SET LOGIN = ?, SENHA = ? WHERE ID=?";
-        try(Connection conexao = ConnectionFactory.obterConexao();
-            PreparedStatement comandoSQL = conexao.prepareStatement(sql)){
+        try(
+            PreparedStatement comandoSQL = conn.prepareStatement(sql)){
             comandoSQL.setString(1,usuario.getLogin());
             comandoSQL.setString(2,usuario.getSenha());
             comandoSQL.setInt(3, usuario.getId());
@@ -71,8 +102,8 @@ public class UsuarioDao {
     }
     public boolean existeUsuarioPorLogin(String login) {
         String sql = "SELECT COUNT(*) FROM USUARIO WHERE LOGIN = ?";
-        try (Connection conexao = ConnectionFactory.obterConexao();
-             PreparedStatement comandoSQL = conexao.prepareStatement(sql)) {
+        try (
+             PreparedStatement comandoSQL = conn.prepareStatement(sql)) {
             comandoSQL.setString(1, login);
             ResultSet rs = comandoSQL.executeQuery();
             if (rs.next()) {
@@ -85,8 +116,8 @@ public class UsuarioDao {
     }
     public void excluirUsua(String login) {
         String sql = "DELETE FROM USUARIO WHERE LOGIN=?";
-        try (Connection conexao = ConnectionFactory.obterConexao();
-             PreparedStatement comandoSQL = conexao.prepareStatement((sql))) {
+        try (
+             PreparedStatement comandoSQL = conn.prepareStatement((sql))) {
             comandoSQL.setString(1,
                     login);
             int linhasAfetadas = comandoSQL.executeUpdate();
@@ -103,6 +134,5 @@ public class UsuarioDao {
     public String autenticarUsuario(Usuario usuario) {
         return null;
     }
-
 
 }

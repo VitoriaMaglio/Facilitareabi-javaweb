@@ -25,25 +25,32 @@ public class UsuarioService {
         return dto.convertToUsuarioResponseDto(usuarioDao.buscarLogin(login));
         //buscar dados da entidade no banco e retornar um dto na resposta para o usuário
 
-
     }
 
-//    public List<UsuarioResponse> listarUsuario(){
-//        List<Usuario> usuarios = usuarioDao.listar();
-//        List<UsuarioResponse> responses = new ArrayList<>();
-//
-//        for (Usuario u : usuarios) {
-//            UsuarioResponse dto = new UsuarioResponse(
-//
-//                    u.getLogin(),
-//                    u.getFeedback()
-//            );
-//            responses.add(dto);
+    public List<UsuarioResponse> listarUsuarios() throws SQLException {
+        List<Usuario> usuarios = usuarioDao.listarUsuarios();
+        List<UsuarioResponse> resposta = new ArrayList<>();
+        for (Usuario u : usuarios) {
+            UsuarioResponse dto = new UsuarioResponse();
+            dto.setLogin(u.getLogin());
+            dto.setLogin(u.getLogin());
+            resposta.add(dto);
+        }
+        return resposta;
+    }
+
+//    public UsuarioResponse buscarUsuarioPorLogin(String login) throws SQLException {
+//        Usuario usuario = usuarioDao.buscarLogin(login);
+//        if (usuario != null) {
+//            UsuarioResponse dto = new UsuarioResponse();
+//            dto.setLogin(usuario.getLogin());
+//            dto.setFeedback(usuario.getFeedback());
+//            return dto;
+//        } else {
+//            return null;
 //        }
-//        return responses;
 //    }
-    //método para listar usuários criar listar em usuáriodao
-    //faz sentido listar usuários?
+
 
 
 }

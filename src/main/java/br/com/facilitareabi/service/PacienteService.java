@@ -5,6 +5,8 @@ import br.com.facilitareabi.dto.PacienteResponse;
 import br.com.facilitareabi.model.Paciente;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PacienteService {
     private PacienteDao pacienteDao = new PacienteDao();
@@ -24,5 +26,16 @@ public class PacienteService {
     public boolean validarPaciente(Paciente paciente) {
         return paciente.getNome() != null && !paciente.getNome().isEmpty()
                 && paciente.getCpf() != null && !paciente.getCpf().isEmpty();
+    }
+
+    public List<PacienteResponse> listarPacientes()throws SQLException {
+        List<Paciente> pacientes = pacienteDao.listarPacientes();
+        List<PacienteResponse> resposta = new ArrayList<>();
+        for (Paciente p : pacientes){
+            PacienteResponse dto = new PacienteResponse();
+            dto.convertToPacienteDto(p);
+            resposta.add(dto);
+        }
+        return resposta;
     }
 }

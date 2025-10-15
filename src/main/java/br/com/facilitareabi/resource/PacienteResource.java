@@ -7,10 +7,7 @@ import br.com.facilitareabi.dto.UsuarioResponse;
 import br.com.facilitareabi.dao.PacienteDao;
 import br.com.facilitareabi.model.Paciente;
 import br.com.facilitareabi.service.PacienteService;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -18,6 +15,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Scanner;
 @Path("pacientes/")
 public class PacienteResource {
@@ -48,37 +46,69 @@ public class PacienteResource {
         }
     }
 
+    //Método para retornar pacientes
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response listarPacientes(){
+        try{
+            List<PacienteResponse> pacientes = pacienteService.listarPacientes();
+            return Response.ok(pacientes).build();
 
-
-
-    public void atualizarPaciente(Paciente paciente){
-        System.out.println("Deseja atualizar seu cadastro?");
-        String resp = scanner.nextLine();
-        if (resp.equalsIgnoreCase("Sim")){
-            if (paciente.getDataNascimento() == null) {
-                System.out.println("Digite sua data de nascimento (dd/MM/yyyy):");
-                String dataStr = scanner.nextLine();
-                LocalDate data = LocalDate.parse(dataStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-                paciente.setDataNascimento(data);
-                cadastrarPaciente();
-                pacienteDao.atualizarPaciente(paciente);
-            }
-        }else{
-            System.out.println("Ok");
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"erro\": \"Erro ao listar pacientes: " + e.getMessage() + "\"}")
+                    .build();
         }
     }
-    public void excluirPaciente(){
-        Paciente paciente = new Paciente();
-        System.out.println("Deseja excluir um paciente?");
-        String resp = scanner.nextLine();
-        if (resp.equalsIgnoreCase("Sim")){
-            System.out.println("Digite o nome do paciente que você deseja excluir: ");
-            String nomeExcluir = scanner.nextLine();
-            paciente.setNome(nomeExcluir);
-            pacienteDao.excluirPaciente(paciente.getNome());
-            System.out.println("Paciente excluído!");
-        }else {
-            System.out.println("Ok!");
+    //Método para retornar pacientes com base nome
+    @GET
+    @Path("/{nome}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response buyscarPacienteNome(@PathParam("nome")String nome){
+        try{
+            PacienteResponse pacienteResponse = pacienteService.buscarPorNome(nome);
+            if (pacienteResponse != null){
+                return Response.ok(pacienteResponse).build();
+            }else
+                return Response.status(Response.Status.NOT_FOUND).entity("{\"erro\": \"Paciente não encontrado\"}").build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"erro\": \"Erro ao buscar paciente: " + e.getMessage() + "\"}")
+                    .build();
         }
     }
+
+
+
+
+//    public void atualizarPaciente(Paciente paciente){
+//        System.out.println("Deseja atualizar seu cadastro?");
+//        String resp = scanner.nextLine();
+//        if (resp.equalsIgnoreCase("Sim")){
+//            if (paciente.getDataNascimento() == null) {
+//                System.out.println("Digite sua data de nascimento (dd/MM/yyyy):");
+//                String dataStr = scanner.nextLine();
+//                LocalDate data = LocalDate.parse(dataStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+//                paciente.setDataNascimento(data);
+//                cadastrarPaciente();
+//                pacienteDao.atualizarPaciente(paciente);
+//            }
+//        }else{
+//            System.out.println("Ok");
+//        }
+//    }
+//    public void excluirPaciente(){
+//        Paciente paciente = new Paciente();
+//        System.out.println("Deseja excluir um paciente?");
+//        String resp = scanner.nextLine();
+//        if (resp.equalsIgnoreCase("Sim")){
+//            System.out.println("Digite o nome do paciente que você deseja excluir: ");
+//            String nomeExcluir = scanner.nextLine();
+//            paciente.setNome(nomeExcluir);
+//            pacienteDao.excluirPaciente(paciente.getNome());
+//            System.out.println("Paciente excluído!");
+//        }else {
+//            System.out.println("Ok!");
+//        }
+//    }
 }
