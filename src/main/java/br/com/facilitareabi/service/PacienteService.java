@@ -49,4 +49,20 @@ public class PacienteService {
 //                .collect(Collectors.toList());
 //    }
 
+    public PacienteResponse atualizarPaciente(PacienteRequest request) throws SQLException{
+        Paciente paciente = new Paciente(
+                request.getNome(),
+                request.getCpf(),
+                request.getDataNascimento(),
+                        request.getEmail(),
+                        request.getTelefone(),
+                        request.getVulnerabilidade(),
+                        request.getAptidao());
+        pacienteDao.atualizarPaciente(paciente);
+        return null;
+    }
+    public void excluirPaciente(String nome) throws SQLException{
+        pacienteDao.excluirPaciente(nome);
+    }
+
 }

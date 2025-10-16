@@ -3,6 +3,7 @@ package br.com.facilitareabi.resource;
 import br.com.facilitareabi.dao.ConsultaDao;
 import br.com.facilitareabi.dto.ConsultaRequest;
 import br.com.facilitareabi.dto.ConsultaResponse;
+import br.com.facilitareabi.dto.UsuarioRequest;
 import br.com.facilitareabi.dto.UsuarioResponse;
 import br.com.facilitareabi.enums.StatusConsultaEnum;
 import br.com.facilitareabi.model.Consulta;
@@ -55,6 +56,31 @@ public class ConsultaResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("{\"erro\": \"Erro ao listar consultas: " + e.getMessage() + "\"}")
                     .build();
+        }
+    }
+
+    @PUT
+    @Path("/{id}")
+    public Response alterarConsulta(@PathParam("id") int id, ConsultaRequest request) {
+        try {
+            ConsultaResponse atualizado = consultaService.atualizarConsulta( request);
+            return Response.ok(atualizado).build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao atualizar consulta: " + e.getMessage()).build();
+        }
+    }
+
+    // DELETE
+    @DELETE
+    @Path("/{id}")
+    public Response excluirConsulta(@PathParam("id")int id) {
+        try {
+            consultaService.excluirConsultaData(id);
+            return Response.ok().entity("Consulta excluída com sucesso!").build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao excluir consulta: " + e.getMessage()).build();
         }
     }
 

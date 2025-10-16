@@ -27,7 +27,45 @@ public class ConsultaRequest {
         this.paciente = paciente;
     }
 
+    public LocalDate getDataConsulta() {
+        return dataConsulta;
+    }
 
+    public void setDataConsulta(LocalDate dataConsulta) {
+        this.dataConsulta = dataConsulta;
+    }
+
+    public StatusConsultaEnum getStatusConsulta() {
+        return StatusConsulta;
+    }
+
+    public void setStatusConsulta(StatusConsultaEnum statusConsulta) {
+        StatusConsulta = statusConsulta;
+    }
+
+    public String getMotivoFalta() {
+        return motivoFalta;
+    }
+
+    public void setMotivoFalta(String motivoFalta) {
+        this.motivoFalta = motivoFalta;
+    }
+
+    public String getEspecializacao() {
+        return especializacao;
+    }
+
+    public void setEspecializacao(String especializacao) {
+        this.especializacao = especializacao;
+    }
+
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
+    }
 
     //Método conversão de usuário para usuario dto
     public ConsultaRequest convertToConsultaRequestDTO(Consulta consulta){

@@ -56,6 +56,19 @@ public class ConsultaServiceImpl implements ConsultaService {
         return resposta;
     }
 
+    @Override
+    public ConsultaResponse atualizarConsulta( ConsultaRequest request) throws SQLException {
+        Consulta consulta = new Consulta(request.getDataConsulta(),request.getStatusConsulta(), request.getEspecializacao(),request.getMotivoFalta(),request.getPaciente());
+        consultaDao.atualizarConsulta(consulta);
+        return null;
+    }
+
+    @Override
+    public void excluirConsultaData(int id) throws SQLException {
+        consultaDao.excluirConsultaData(id);
+
+    }
+
 //    @Override
 //    public void cadastrarConsulta(Consulta consulta) {
 //        consultaDao.cadastrarConsulta(consulta);

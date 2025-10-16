@@ -51,6 +51,22 @@ public class UsuarioService {
 //        }
 //    }
 
+    public UsuarioResponse alterarUsuario(int id, UsuarioRequest request) throws SQLException {
+        Usuario usuario = new Usuario( id, request.getLogin(), request.getSenha(), request.getFeedback());
+        usuarioDao.alterarUsuario(usuario);
+        System.out.println("Usuário atualizado com sucesso!");
+
+        return null;
+    }
+
+    // DELETE
+    public void excluirUsua(String login) throws SQLException {
+        usuarioDao.excluirUsua(login);
+        System.out.println("Usuário excluído com sucesso!");
+    }
+
+
+
 
 
 }

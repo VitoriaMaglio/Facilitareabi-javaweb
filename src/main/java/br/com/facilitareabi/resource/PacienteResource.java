@@ -76,6 +76,30 @@ public class PacienteResource {
         }
     }
 
+    //PUT
+    @PUT
+    @Path("/{id_paciente}")
+    public Response alterarPaciente(@PathParam("id_paciente") int id, PacienteRequest request){
+        try{
+            PacienteResponse atualizado = pacienteService.atualizarPaciente(request);
+            return Response.ok().entity("Paciente atualizado!").build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao atualizar paciente: " + e.getMessage()).build();
+        }
+    }
+
+    //Delete paciente
+    @DELETE
+    @Path("/{nome}")
+    public Response deletarPaciente(@PathParam("nome")String nome){
+        try{
+            pacienteService.excluirPaciente(nome);
+            return Response.ok().entity("Paciente excluído!").build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao excluir paciente: " + e.getMessage()).build();
+        }
+    }
+
 
 
 

@@ -105,8 +105,31 @@ public class UsuarioResource {
         }
     }
     //Put
+    @PUT
+    @Path("/{id}")
+    public Response alterarUsuario(@PathParam("id") int id, UsuarioRequest request) {
+        try {
+            UsuarioResponse atualizado = usuarioService.alterarUsuario(id, request);
+            return Response.ok(atualizado).build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao atualizar usuário: " + e.getMessage()).build();
+        }
+    }
 
-    //Delete
+
+    // DELETE - Excluir usuário
+    @DELETE
+    @Path("/{login}")
+    public Response excluirUsua(@PathParam("login") String login) {
+        try {
+            usuarioService.excluirUsua(login);
+            return Response.ok().entity("Usuário excluído com sucesso!").build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao excluir usuário: " + e.getMessage()).build();
+        }
+    }
 
 
 

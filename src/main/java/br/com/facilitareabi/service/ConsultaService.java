@@ -17,5 +17,7 @@ public interface ConsultaService {
     ConsultaResponse buscarPorData(LocalDate data) throws SQLException;
     void cadastrarConsulta(ConsultaRequest consultaRequest);
 
-    List<ConsultaResponse> listarConsulta()  throws SQLException;;
+    List<ConsultaResponse> listarConsulta()  throws SQLException;
+    ConsultaResponse atualizarConsulta( ConsultaRequest request) throws SQLException;
+    void excluirConsultaData(int id) throws SQLException;
 }
