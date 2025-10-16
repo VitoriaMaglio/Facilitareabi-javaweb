@@ -19,6 +19,11 @@ public class PacienteService {
 
     //buscar paciente no banco de dados e retorna um paciente dto; conectando com dao
     public PacienteResponse buscarPorNome (String nome) throws SQLException{
+        Paciente paciente = pacienteDao.buscarPorNome(nome);
+
+        if (paciente == null) {
+            return null; // retorna null, e o Resource decide o que fazer
+        }
         PacienteResponse dto = new PacienteResponse();
         return dto.convertToPacienteDto(pacienteDao.buscarPorNome(nome));
     }
@@ -32,10 +37,16 @@ public class PacienteService {
         List<Paciente> pacientes = pacienteDao.listarPacientes();
         List<PacienteResponse> resposta = new ArrayList<>();
         for (Paciente p : pacientes){
-            PacienteResponse dto = new PacienteResponse();
-            dto.convertToPacienteDto(p);
+            PacienteResponse dto = new PacienteResponse().convertToPacienteDto(p);
             resposta.add(dto);
         }
         return resposta;
     }
+//    public List<PacienteResponse> listarPacientes() throws SQLException {
+//        return pacienteDao.listar()
+//                .stream()
+//                .map(p -> new PacienteResponse().convertToPacienteDto(p))
+//                .collect(Collectors.toList());
+//    }
+
 }

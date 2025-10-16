@@ -7,9 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PacienteDao {
+
+    private Connection conn;
+    public PacienteDao() {
+        this.conn = ConnectionFactory.obterConexao();
+    }
     public void cadastrarPaciente(Paciente paciente) {
         String sql = "INSERT INTO paciente (id_paciente, nome, dataNascimento, email, telefone, cpf, vulnerabilidade, aptidao) VALUES (paciente_seq.NEXTVAL,?, ?,?, ?, ?, ?,?)";
-        try (Connection conn = ConnectionFactory.obterConexao();
+        try (
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, paciente.getNome());
             ps.setDate(2, Date.valueOf(paciente.getDataNascimento()));
@@ -33,7 +38,7 @@ public class PacienteDao {
     public Paciente buscarPorNome(String nome) {
         String sql = "SELECT * FROM paciente WHERE nome = ?";
         Paciente paciente = null;
-        try (Connection conn = ConnectionFactory.obterConexao();
+        try (
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, nome);
             try (ResultSet rs = ps.executeQuery()) {
@@ -55,7 +60,7 @@ public class PacienteDao {
     }
     public void atualizarPaciente(Paciente paciente) {
         String sql = "UPDATE paciente SET nome = ?, dataNascimento = ?, email = ?, telefone = ?, cpf = ?, vulnerabilidade = ?, aptidao= ? WHERE id_paciente = ?";
-        try (Connection conn = ConnectionFactory.obterConexao();
+        try (
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, paciente.getNome());
             ps.setDate(2, Date.valueOf(paciente.getDataNascimento()));
@@ -72,7 +77,7 @@ public class PacienteDao {
     }
     public void excluirPaciente(String nome) {
         String sql = "DELETE FROM paciente WHERE nome = ?";
-        try (Connection conn = ConnectionFactory.obterConexao();
+        try (
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, nome);
             ps.executeUpdate();
@@ -83,7 +88,7 @@ public class PacienteDao {
     public List<Paciente> listarPacientes() {
         String sql = "SELECT * FROM paciente";
         List<Paciente> lista = new ArrayList<>();
-        try (Connection conn = ConnectionFactory.obterConexao();
+        try (
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {

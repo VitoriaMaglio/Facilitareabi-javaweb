@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
-@Path("pacientes/")
+@Path("pacientes")
 public class PacienteResource {
 
     PacienteDao pacienteDao = new PacienteDao();
@@ -26,21 +26,19 @@ public class PacienteResource {
 
     //Criando métodos http
     @POST
-    @Path("/cadastro/paciente")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response cadastrarPaciente(PacienteRequest request) {
         try {
             pacienteService.cadastrarPaciente(request);//chama o service resp por salvar no banco de dados
 
-            PacienteResponse cadastrado = pacienteService.buscarPorNome(paciente.getNome());
-            //busca no banco o usuário para confirmar se foi salvo
-            if (cadastrado.getNome().equals(paciente.getNome())) {
-                //verifica se o nome do usuário retornado do banc é igual ao q foi enviado
+            PacienteResponse cadastrado = pacienteService.buscarPorNome(request.getNome());
+            if (cadastrado != null){
                 return Response.status(Response.Status.CREATED).build();
             } else {
-                return Response.status(Response.Status.BAD_REQUEST).build();
-            }
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }

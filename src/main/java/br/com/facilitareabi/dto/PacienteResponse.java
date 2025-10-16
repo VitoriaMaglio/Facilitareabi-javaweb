@@ -18,7 +18,6 @@ public class PacienteResponse {
     public PacienteResponse(String nome, String cpf, String vulnerabilidade, String aptidao) {
         this.nome = nome;
         this.cpf = cpf;
-
         this.vulnerabilidade = vulnerabilidade;
         this.aptidao = aptidao;
     }
@@ -57,6 +56,7 @@ public class PacienteResponse {
 
     //Método converter paciente para pacientedto
     public PacienteResponse convertToPacienteDto(Paciente paciente){
+        if(paciente == null) return null;
         return new PacienteResponse(paciente.getNome(), paciente.getCpf(),paciente.getVulnerabilidade(), paciente.getAptidao());
     }
 

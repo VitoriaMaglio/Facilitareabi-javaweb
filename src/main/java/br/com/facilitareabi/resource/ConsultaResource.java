@@ -3,15 +3,13 @@ package br.com.facilitareabi.resource;
 import br.com.facilitareabi.dao.ConsultaDao;
 import br.com.facilitareabi.dto.ConsultaRequest;
 import br.com.facilitareabi.dto.ConsultaResponse;
+import br.com.facilitareabi.dto.UsuarioResponse;
 import br.com.facilitareabi.enums.StatusConsultaEnum;
 import br.com.facilitareabi.model.Consulta;
 import br.com.facilitareabi.model.Paciente;
 import br.com.facilitareabi.service.ConsultaService;
 import br.com.facilitareabi.service.ConsultaServiceImpl;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -19,6 +17,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Scanner;
 @Path("/consultas")
 public class ConsultaResource {
@@ -45,6 +44,22 @@ public class ConsultaResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response listarConsultas() {
+        try {
+            List<ConsultaResponse> consultaResponses = consultaService.listarConsulta();
+            return Response.ok(consultaResponses).build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("{\"erro\": \"Erro ao listar consultas: " + e.getMessage() + "\"}")
+                    .build();
+        }
+    }
+
+
+
 
 
 

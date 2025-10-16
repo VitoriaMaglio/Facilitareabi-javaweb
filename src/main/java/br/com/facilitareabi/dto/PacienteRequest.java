@@ -2,6 +2,7 @@ package br.com.facilitareabi.dto;
 
 import br.com.facilitareabi.model.Consulta;
 import br.com.facilitareabi.model.Paciente;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,6 +12,7 @@ public class PacienteRequest {
 
     private String nome;
     private String cpf;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dataNascimento;
     private String telefone;
     private String email;
@@ -27,6 +29,62 @@ public class PacienteRequest {
         this.telefone = telefone;
         this.email = email;
         this.vulnerabilidade = vulnerabilidade;
+        this.aptidao = aptidao;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getVulnerabilidade() {
+        return vulnerabilidade;
+    }
+
+    public void setVulnerabilidade(String vulnerabilidade) {
+        this.vulnerabilidade = vulnerabilidade;
+    }
+
+    public String getAptidao() {
+        return aptidao;
+    }
+
+    public void setAptidao(String aptidao) {
         this.aptidao = aptidao;
     }
 

@@ -7,6 +7,8 @@ import br.com.facilitareabi.model.Paciente;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
+
 public interface ConsultaService {
     boolean verificarAptoParaConsulta(Paciente paciente);
     void remarcarConsulta(Consulta consulta, LocalDate novaData, String motivoFalta);
@@ -14,4 +16,6 @@ public interface ConsultaService {
     ConsultaDao consultaDao = new ConsultaDao();
     ConsultaResponse buscarPorData(LocalDate data) throws SQLException;
     void cadastrarConsulta(ConsultaRequest consultaRequest);
+
+    List<ConsultaResponse> listarConsulta()  throws SQLException;;
 }

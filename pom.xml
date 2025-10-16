@@ -40,6 +40,12 @@
           <artifactId>ojdbc17</artifactId>
           <version>23.9.0.25.07</version>
       </dependency>
+      <dependency>
+          <groupId>com.fasterxml.jackson.datatype</groupId>
+          <artifactId>jackson-datatype-jsr310</artifactId>
+          <version>2.15.2</version> <!-- ajuste para a versão do seu Jackson -->
+      </dependency>
+
 
 
 

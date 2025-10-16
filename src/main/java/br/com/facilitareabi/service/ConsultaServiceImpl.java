@@ -2,12 +2,17 @@ package br.com.facilitareabi.service;
 
 import br.com.facilitareabi.dto.ConsultaRequest;
 import br.com.facilitareabi.dto.ConsultaResponse;
+import br.com.facilitareabi.dto.UsuarioResponse;
 import br.com.facilitareabi.enums.StatusConsultaEnum;
 import br.com.facilitareabi.model.Consulta;
 import br.com.facilitareabi.model.Paciente;
+import br.com.facilitareabi.model.Usuario;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 public class ConsultaServiceImpl implements ConsultaService {
     @Override
     public boolean verificarAptoParaConsulta(Paciente paciente) {
@@ -38,6 +43,17 @@ public class ConsultaServiceImpl implements ConsultaService {
     @Override
     public void cadastrarConsulta(ConsultaRequest consultaRequest) {
         consultaDao.cadastrarConsulta(consultaRequest.convertDtoToConsulta(consultaRequest));
+    }
+
+    @Override
+    public List<ConsultaResponse> listarConsulta() {
+        List<Consulta> consultas = consultaDao.listarConsultas();
+        List<ConsultaResponse> resposta = new ArrayList<>();
+        for (Consulta c : consultas) {
+            ConsultaResponse dto = new ConsultaResponse().convertToConsultaResponseDTO(c);
+            resposta.add(dto);
+        }
+        return resposta;
     }
 
 //    @Override
