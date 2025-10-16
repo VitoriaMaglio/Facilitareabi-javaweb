@@ -3,11 +3,10 @@ package br.com.facilitareabi.dto;
 import br.com.facilitareabi.enums.StatusConsultaEnum;
 import br.com.facilitareabi.model.Consulta;
 import br.com.facilitareabi.model.Paciente;
-import br.com.facilitareabi.model.Usuario;
 
 import java.time.LocalDate;
 
-public class ConsultaResponse {
+public class ConsultaResponseDTO {
 
     private LocalDate dataConsulta;
     private StatusConsultaEnum StatusConsulta;
@@ -16,10 +15,10 @@ public class ConsultaResponse {
     private Paciente paciente;
 
 
-    public ConsultaResponse() {
+    public ConsultaResponseDTO() {
     }
 
-    public ConsultaResponse(LocalDate dataConsulta, StatusConsultaEnum statusConsulta, String especializacao, Paciente paciente) {
+    public ConsultaResponseDTO(LocalDate dataConsulta, StatusConsultaEnum statusConsulta, String especializacao, Paciente paciente) {
         this.dataConsulta = dataConsulta;
         StatusConsulta = statusConsulta;
         this.especializacao = especializacao;
@@ -59,12 +58,13 @@ public class ConsultaResponse {
     }
 
     //Método conversão de usuário para usuario dto
-    public ConsultaResponse convertToConsultaResponseDTO(Consulta consulta){
-        return new ConsultaResponse(consulta.getDataConsulta(),consulta.getStatusConsulta(), consulta.getEspecializacao(), consulta.getPaciente());
+    public ConsultaResponseDTO convertToConsultaResponseDTO(Consulta consulta){
+        if(consulta == null) return null;
+        return new ConsultaResponseDTO(consulta.getDataConsulta(),consulta.getStatusConsulta(), consulta.getEspecializacao(), consulta.getPaciente());
     }
 
     //Método conversão de dto para usuario
-    public Consulta convertDtoToConsulta(ConsultaResponse dto){
+    public Consulta convertDtoToConsulta(ConsultaResponseDTO dto){
         return new Consulta(dto.dataConsulta,dto.StatusConsulta, dto.especializacao,dto.paciente);
     }
 }

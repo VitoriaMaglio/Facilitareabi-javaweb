@@ -2,9 +2,7 @@ package br.com.facilitareabi.dto;
 
 import br.com.facilitareabi.model.Paciente;
 
-import java.time.LocalDate;
-
-public class PacienteResponse {
+public class PacienteResponseDTO {
 
 
     private String nome;
@@ -12,10 +10,10 @@ public class PacienteResponse {
     private String vulnerabilidade;
     private String aptidao;
 
-    public PacienteResponse() {
+    public PacienteResponseDTO() {
     }
 
-    public PacienteResponse(String nome, String cpf, String vulnerabilidade, String aptidao) {
+    public PacienteResponseDTO(String nome, String cpf, String vulnerabilidade, String aptidao) {
         this.nome = nome;
         this.cpf = cpf;
         this.vulnerabilidade = vulnerabilidade;
@@ -55,13 +53,13 @@ public class PacienteResponse {
     }
 
     //Método converter paciente para pacientedto
-    public PacienteResponse convertToPacienteDto(Paciente paciente){
+    public PacienteResponseDTO convertToPacienteDto(Paciente paciente){
         if(paciente == null) return null;
-        return new PacienteResponse(paciente.getNome(), paciente.getCpf(),paciente.getVulnerabilidade(), paciente.getAptidao());
+        return new PacienteResponseDTO(paciente.getNome(), paciente.getCpf(),paciente.getVulnerabilidade(), paciente.getAptidao());
     }
 
     //Método converter pacientedto para paciente
-    public Paciente convertDtoToPaciente(PacienteResponse dto){
+    public Paciente convertDtoToPaciente(PacienteResponseDTO dto){
         return new Paciente(dto.nome, dto.cpf, dto.vulnerabilidade, dto.aptidao);
     }
 }

@@ -14,33 +14,48 @@ public class ConsultaDao {
     public ConsultaDao() {
         this.conn = ConnectionFactory.obterConexao();
     }
+
+
     public void cadastrarConsulta(Consulta consulta) {
-        String sql = "insert into consulta ( id, dataConsulta, statusConsulta, motivoFalta, especializacao, id_paciente) values(consulta_seq.NEXTVAL,?,?,?,?,?)";
-        try(
-            PreparedStatement comandoSQL = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            comandoSQL.setDate(1, Date.valueOf((LocalDate)consulta.getDataConsulta()));
-            comandoSQL.setString(2, consulta.getStatusConsulta().name());
-            comandoSQL.setString(3, consulta.getMotivoFalta());
-            comandoSQL.setString(4,consulta.getEspecializacao());
-            comandoSQL.setInt(5,consulta.getPaciente().getId_paciente());
-            comandoSQL.executeUpdate();
-            try (PreparedStatement psId = conn.prepareStatement("SELECT consulta_seq.CURRVAL FROM dual");
-                 ResultSet rs = psId.executeQuery()) {
+        String sql = "INSERT INTO consulta (dataConsulta, statusConsulta, motivoFalta, especializacao, id_paciente) "
+                + "VALUES (?, ?, ?, ?, ?)";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setDate(1, Date.valueOf(consulta.getDataConsulta()));
+            ps.setString(2, consulta.getStatusConsulta().name()); // VARCHAR2 no DB
+            ps.setString(3, consulta.getMotivoFalta());
+            ps.setString(4, consulta.getEspecializacao());
+
+            ps.setInt(5, consulta.getPaciente().getId_paciente()); // NUMBER no DB
+
+            ps.executeUpdate();
+
+            try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
                     consulta.setId(rs.getInt(1));
                 }
             }
-            System.out.println("Consulta cadastrado com ID: " + consulta.getId());
+
+            System.out.println("Consulta cadastrada com ID: " + consulta.getId());
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+
+
+
     public Consulta buscarPorData(LocalDate data){
         String sql = "SELECT * FROM consulta WHERE dataConsulta=?";
         Consulta consulta = null;
         try (
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setDate(1, Date.valueOf(data));
+              PreparedStatement ps = conn.prepareStatement(sql)) {
+            if (data != null) {
+                ps.setDate(1, Date.valueOf(data));
+            } else {
+                ps.setNull(1, java.sql.Types.DATE);
+            }
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     consulta = new Consulta();

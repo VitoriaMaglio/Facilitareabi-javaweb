@@ -1,8 +1,8 @@
 package br.com.facilitareabi.service;
 import br.com.facilitareabi.dao.UsuarioDao;
 import br.com.facilitareabi.dto.UsuarioLoginDto;
-import br.com.facilitareabi.dto.UsuarioRequest;
-import br.com.facilitareabi.dto.UsuarioResponse;
+import br.com.facilitareabi.dto.UsuarioRequestDTO;
+import br.com.facilitareabi.dto.UsuarioResponseDTO;
 import br.com.facilitareabi.model.Usuario;
 
 import java.sql.SQLException;
@@ -15,23 +15,23 @@ public class UsuarioService {
     public String autenticarUsuario(UsuarioLoginDto dto) throws SQLException {
         return usuarioDao.autenticarUsuario(dto.convertToUsuario(dto));
    }
-    public void cadastrarUsuario(UsuarioRequest usuarioDto) throws SQLException {
+    public void cadastrarUsuario(UsuarioRequestDTO usuarioDto) throws SQLException {
         usuarioDao.cadastrarUsuario(usuarioDto.convertToUsuario(usuarioDto));
         //chamar o dao para cadastrar usuário e converter os dados que vão entrar no banco em entidade
     }
 
-    public UsuarioResponse buscarLogin(String login) throws SQLException {
-        UsuarioResponse dto = new UsuarioResponse();
+    public UsuarioResponseDTO buscarLogin(String login) throws SQLException {
+        UsuarioResponseDTO dto = new UsuarioResponseDTO();
         return dto.convertToUsuarioResponseDto(usuarioDao.buscarLogin(login));
         //buscar dados da entidade no banco e retornar um dto na resposta para o usuário
 
     }
 
-    public List<UsuarioResponse> listarUsuarios() throws SQLException {
+    public List<UsuarioResponseDTO> listarUsuarios() throws SQLException {
         List<Usuario> usuarios = usuarioDao.listarUsuarios();
-        List<UsuarioResponse> resposta = new ArrayList<>();
+        List<UsuarioResponseDTO> resposta = new ArrayList<>();
         for (Usuario u : usuarios) {
-            UsuarioResponse dto = new UsuarioResponse();
+            UsuarioResponseDTO dto = new UsuarioResponseDTO();
             dto.setLogin(u.getLogin());
             dto.setLogin(u.getLogin());
             resposta.add(dto);
@@ -51,7 +51,7 @@ public class UsuarioService {
 //        }
 //    }
 
-    public UsuarioResponse alterarUsuario(int id, UsuarioRequest request) throws SQLException {
+    public UsuarioResponseDTO alterarUsuario(int id, UsuarioRequestDTO request) throws SQLException {
         Usuario usuario = new Usuario( id, request.getLogin(), request.getSenha(), request.getFeedback());
         usuarioDao.alterarUsuario(usuario);
         System.out.println("Usuário atualizado com sucesso!");

@@ -2,15 +2,15 @@ package br.com.facilitareabi.dto;
 
 import br.com.facilitareabi.model.Usuario;
 
-public class UsuarioResponse {
+public class UsuarioResponseDTO {
 
     private String login;
     private String feedback;
 
-    public UsuarioResponse() {
+    public UsuarioResponseDTO() {
     }
 
-    public UsuarioResponse(String login, String feedback) {
+    public UsuarioResponseDTO(String login, String feedback) {
         this.login = login;
         this.feedback = feedback;
     }
@@ -35,13 +35,13 @@ public class UsuarioResponse {
 
     //Método conversão de usuário para usuario dto
 
-    public UsuarioResponse convertToUsuarioResponseDto(Usuario usuario){
-        return new UsuarioResponse(usuario.getLogin(), usuario.getFeedback());
+    public UsuarioResponseDTO convertToUsuarioResponseDto(Usuario usuario){
+        return new UsuarioResponseDTO(usuario.getLogin(), usuario.getFeedback());
     }
 
     //Método conversão de dto para usuario
 
-    public Usuario convertToUsuario(UsuarioResponse dto){
+    public Usuario convertToUsuario(UsuarioResponseDTO dto){
         return new Usuario(dto.login, dto.feedback);
     }
 }

@@ -1,13 +1,11 @@
 package br.com.facilitareabi.dto;
 
-import br.com.facilitareabi.model.Consulta;
 import br.com.facilitareabi.model.Paciente;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
-import java.util.List;
 
-public class PacienteRequest {
+public class PacienteRequestDTO {
 
 
     private String nome;
@@ -19,10 +17,10 @@ public class PacienteRequest {
     private String vulnerabilidade;
     private String aptidao;
 
-    public PacienteRequest() {
+    public PacienteRequestDTO() {
     }
 
-    public PacienteRequest(String nome, String cpf, LocalDate dataNascimento, String telefone, String email, String vulnerabilidade, String aptidao) {
+    public PacienteRequestDTO(String nome, String cpf, LocalDate dataNascimento, String telefone, String email, String vulnerabilidade, String aptidao) {
         this.nome = nome;
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
@@ -89,12 +87,12 @@ public class PacienteRequest {
     }
 
     //Método converter paciente para pacientedto
-    public PacienteRequest convertToPacienteDto(Paciente paciente){
-        return new PacienteRequest(paciente.getNome(), paciente.getCpf(), paciente.getDataNascimento(), paciente.getTelefone(),paciente.getEmail(),paciente.getVulnerabilidade(), paciente.getAptidao());
+    public PacienteRequestDTO convertToPacienteDto(Paciente paciente){
+        return new PacienteRequestDTO(paciente.getNome(), paciente.getCpf(), paciente.getDataNascimento(), paciente.getTelefone(),paciente.getEmail(),paciente.getVulnerabilidade(), paciente.getAptidao());
     }
 
     //Método converter pacientedto para paciente
-    public Paciente convertDtoToPaciente(PacienteRequest dto){
+    public Paciente convertDtoToPaciente(PacienteRequestDTO dto){
         return new Paciente(dto.nome, dto.cpf,dto.dataNascimento,dto.telefone,dto.email, dto.vulnerabilidade, dto.aptidao);
     }
 }

@@ -1,7 +1,7 @@
 package br.com.facilitareabi.service;
-import br.com.facilitareabi.dto.PacienteRequest;
+import br.com.facilitareabi.dto.PacienteRequestDTO;
 import br.com.facilitareabi.dao.PacienteDao;
-import br.com.facilitareabi.dto.PacienteResponse;
+import br.com.facilitareabi.dto.PacienteResponseDTO;
 import br.com.facilitareabi.model.Paciente;
 
 import java.sql.SQLException;
@@ -12,19 +12,19 @@ public class PacienteService {
     private PacienteDao pacienteDao = new PacienteDao();
 
 
-    public void cadastrarPaciente(PacienteRequest pacienteRequest) throws SQLException{
-        pacienteDao.cadastrarPaciente(pacienteRequest.convertDtoToPaciente(pacienteRequest));
+    public void cadastrarPaciente(PacienteRequestDTO pacienteRequestDTO) throws SQLException{
+        pacienteDao.cadastrarPaciente(pacienteRequestDTO.convertDtoToPaciente(pacienteRequestDTO));
     }
     //cadastrar um novo recurso chamando o banco de dados e convertendo para dados da entidade
 
     //buscar paciente no banco de dados e retorna um paciente dto; conectando com dao
-    public PacienteResponse buscarPorNome (String nome) throws SQLException{
+    public PacienteResponseDTO buscarPorNome (String nome) throws SQLException{
         Paciente paciente = pacienteDao.buscarPorNome(nome);
 
         if (paciente == null) {
             return null; // retorna null, e o Resource decide o que fazer
         }
-        PacienteResponse dto = new PacienteResponse();
+        PacienteResponseDTO dto = new PacienteResponseDTO();
         return dto.convertToPacienteDto(pacienteDao.buscarPorNome(nome));
     }
 
@@ -33,11 +33,11 @@ public class PacienteService {
                 && paciente.getCpf() != null && !paciente.getCpf().isEmpty();
     }
 
-    public List<PacienteResponse> listarPacientes()throws SQLException {
+    public List<PacienteResponseDTO> listarPacientes()throws SQLException {
         List<Paciente> pacientes = pacienteDao.listarPacientes();
-        List<PacienteResponse> resposta = new ArrayList<>();
+        List<PacienteResponseDTO> resposta = new ArrayList<>();
         for (Paciente p : pacientes){
-            PacienteResponse dto = new PacienteResponse().convertToPacienteDto(p);
+            PacienteResponseDTO dto = new PacienteResponseDTO().convertToPacienteDto(p);
             resposta.add(dto);
         }
         return resposta;
@@ -49,7 +49,7 @@ public class PacienteService {
 //                .collect(Collectors.toList());
 //    }
 
-    public PacienteResponse atualizarPaciente(PacienteRequest request) throws SQLException{
+    public PacienteResponseDTO atualizarPaciente(PacienteRequestDTO request) throws SQLException{
         Paciente paciente = new Paciente(
                 request.getNome(),
                 request.getCpf(),

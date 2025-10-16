@@ -2,18 +2,16 @@ package br.com.facilitareabi.resource;
 
 import br.com.facilitareabi.dao.UsuarioDao;
 import br.com.facilitareabi.dto.UsuarioLoginDto;
-import br.com.facilitareabi.dto.UsuarioRequest;
-import br.com.facilitareabi.dto.UsuarioResponse;
-import br.com.facilitareabi.model.Usuario;
+import br.com.facilitareabi.dto.UsuarioRequestDTO;
+import br.com.facilitareabi.dto.UsuarioResponseDTO;
 import br.com.facilitareabi.service.UsuarioService;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Scanner;
+
 @Path("usuarios")
 public class UsuarioResource {
     private UsuarioService usuarioService = new UsuarioService();
@@ -28,11 +26,11 @@ public class UsuarioResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response cadastrarUsuario(UsuarioRequest request) {
+    public Response cadastrarUsuario(UsuarioRequestDTO request) {
         try {
             usuarioService.cadastrarUsuario(request);//chama o service resp por salvar no banco de dados
 
-            UsuarioResponse cadastrado = usuarioService.buscarLogin(request.getLogin());
+            UsuarioResponseDTO cadastrado = usuarioService.buscarLogin(request.getLogin());
             //busca no banco o usuário para confirmar se foi salvo
             if (cadastrado.getLogin().equals(request.getLogin())) {
                 //verifica se o nome do usuário retornado do banc é igual ao q foi enviado
@@ -56,12 +54,10 @@ public class UsuarioResource {
             String mensagem = usuarioService.autenticarUsuario(usuario);
 
             if(mensagem.equals("Usuário logado com sucesso")){
-                return Response.ok().entity(mensagem).build();
+                return Response.status(Response.Status.CREATED).build();
             }
             else if(mensagem.equals( "Usuário e/ou senha inválidos")){
-                return Response.status(Response.Status.UNAUTHORIZED)
-                        .entity(mensagem)
-                        .build();
+                return Response.status(Response.Status.BAD_REQUEST).build();
             }
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -75,7 +71,7 @@ public class UsuarioResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response listarUsuarios() {
         try {
-            List<UsuarioResponse> usuarios = usuarioService.listarUsuarios();
+            List<UsuarioResponseDTO> usuarios = usuarioService.listarUsuarios();
             return Response.ok(usuarios).build();
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -89,7 +85,7 @@ public class UsuarioResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response buscarUsuarioPorId(@PathParam("login") String login) {
         try {
-            UsuarioResponse usuario = usuarioService.buscarLogin(login);
+            UsuarioResponseDTO usuario = usuarioService.buscarLogin(login);
 
             if (usuario != null) {
                 return Response.ok(usuario).build();
@@ -107,9 +103,9 @@ public class UsuarioResource {
     //Put
     @PUT
     @Path("/{id}")
-    public Response alterarUsuario(@PathParam("id") int id, UsuarioRequest request) {
+    public Response alterarUsuario(@PathParam("id") int id, UsuarioRequestDTO request) {
         try {
-            UsuarioResponse atualizado = usuarioService.alterarUsuario(id, request);
+            UsuarioResponseDTO atualizado = usuarioService.alterarUsuario(id, request);
             return Response.ok(atualizado).build();
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)

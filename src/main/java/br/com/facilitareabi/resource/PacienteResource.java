@@ -1,9 +1,7 @@
 package br.com.facilitareabi.resource;
 
-import br.com.facilitareabi.dto.PacienteRequest;
-import br.com.facilitareabi.dto.PacienteResponse;
-import br.com.facilitareabi.dto.UsuarioRequest;
-import br.com.facilitareabi.dto.UsuarioResponse;
+import br.com.facilitareabi.dto.PacienteRequestDTO;
+import br.com.facilitareabi.dto.PacienteResponseDTO;
 import br.com.facilitareabi.dao.PacienteDao;
 import br.com.facilitareabi.model.Paciente;
 import br.com.facilitareabi.service.PacienteService;
@@ -12,11 +10,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.Scanner;
+
 @Path("pacientes")
 public class PacienteResource {
 
@@ -28,11 +23,11 @@ public class PacienteResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response cadastrarPaciente(PacienteRequest request) {
+    public Response cadastrarPaciente(PacienteRequestDTO request) {
         try {
             pacienteService.cadastrarPaciente(request);//chama o service resp por salvar no banco de dados
 
-            PacienteResponse cadastrado = pacienteService.buscarPorNome(request.getNome());
+            PacienteResponseDTO cadastrado = pacienteService.buscarPorNome(request.getNome());
             if (cadastrado != null){
                 return Response.status(Response.Status.CREATED).build();
             } else {
@@ -49,7 +44,7 @@ public class PacienteResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response listarPacientes(){
         try{
-            List<PacienteResponse> pacientes = pacienteService.listarPacientes();
+            List<PacienteResponseDTO> pacientes = pacienteService.listarPacientes();
             return Response.ok(pacientes).build();
 
         } catch (SQLException e) {
@@ -58,15 +53,16 @@ public class PacienteResource {
                     .build();
         }
     }
+
     //Método para retornar pacientes com base nome
     @GET
     @Path("/{nome}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response buyscarPacienteNome(@PathParam("nome")String nome){
+    public Response buscarPacienteNome(@PathParam("nome")String nome){
         try{
-            PacienteResponse pacienteResponse = pacienteService.buscarPorNome(nome);
-            if (pacienteResponse != null){
-                return Response.ok(pacienteResponse).build();
+            PacienteResponseDTO pacienteResponseDTO = pacienteService.buscarPorNome(nome);
+            if (pacienteResponseDTO != null){
+                return Response.ok(pacienteResponseDTO).build();
             }else
                 return Response.status(Response.Status.NOT_FOUND).entity("{\"erro\": \"Paciente não encontrado\"}").build();
         } catch (SQLException e) {
@@ -79,9 +75,9 @@ public class PacienteResource {
     //PUT
     @PUT
     @Path("/{id_paciente}")
-    public Response alterarPaciente(@PathParam("id_paciente") int id, PacienteRequest request){
+    public Response alterarPaciente(@PathParam("id_paciente") int id, PacienteRequestDTO request){
         try{
-            PacienteResponse atualizado = pacienteService.atualizarPaciente(request);
+            PacienteResponseDTO atualizado = pacienteService.atualizarPaciente(request);
             return Response.ok().entity("Paciente atualizado!").build();
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao atualizar paciente: " + e.getMessage()).build();

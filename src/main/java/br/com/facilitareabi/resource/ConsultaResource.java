@@ -1,13 +1,8 @@
 package br.com.facilitareabi.resource;
 
-import br.com.facilitareabi.dao.ConsultaDao;
-import br.com.facilitareabi.dto.ConsultaRequest;
-import br.com.facilitareabi.dto.ConsultaResponse;
-import br.com.facilitareabi.dto.UsuarioRequest;
-import br.com.facilitareabi.dto.UsuarioResponse;
-import br.com.facilitareabi.enums.StatusConsultaEnum;
+import br.com.facilitareabi.dto.ConsultaRequestDTO;
+import br.com.facilitareabi.dto.ConsultaResponseDTO;
 import br.com.facilitareabi.model.Consulta;
-import br.com.facilitareabi.model.Paciente;
 import br.com.facilitareabi.service.ConsultaService;
 import br.com.facilitareabi.service.ConsultaServiceImpl;
 import jakarta.ws.rs.*;
@@ -15,9 +10,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 @Path("/consultas")
@@ -29,16 +21,16 @@ public class ConsultaResource {
 
 
     @POST
-    @Path("/cadastro/consulta")
+
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response cadastrarConsulta(ConsultaRequest consultaRequest){
+    public Response cadastrarConsulta(ConsultaRequestDTO consultaRequestDTO){
         try{
-            consultaService.cadastrarConsulta(consultaRequest);
-            ConsultaResponse consultaCadastrada = consultaService.buscarPorData(consulta.getDataConsulta());
-            if(consultaCadastrada.getDataConsulta().isEqual(consulta.getDataConsulta())){
+            consultaService.cadastrarConsulta(consultaRequestDTO);
+            ConsultaResponseDTO consultaCadastrada = consultaService.buscarPorData(consultaRequestDTO.getDataConsulta());
+            if(consultaCadastrada != null){
                 return Response.status(Response.Status.CREATED).build();
-            }else{
+            } else{
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
         }catch (SQLException e){
@@ -47,11 +39,12 @@ public class ConsultaResource {
     }
 
     @GET
+    @Path("/{cadastradas}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response listarConsultas() {
         try {
-            List<ConsultaResponse> consultaResponses = consultaService.listarConsulta();
-            return Response.ok(consultaResponses).build();
+            List<ConsultaResponseDTO> consultaResponsDTOS = consultaService.listarConsulta();
+            return Response.ok(consultaResponsDTOS).build();
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("{\"erro\": \"Erro ao listar consultas: " + e.getMessage() + "\"}")
@@ -61,9 +54,9 @@ public class ConsultaResource {
 
     @PUT
     @Path("/{id}")
-    public Response alterarConsulta(@PathParam("id") int id, ConsultaRequest request) {
+    public Response alterarConsulta(@PathParam("id") int id, ConsultaRequestDTO request) {
         try {
-            ConsultaResponse atualizado = consultaService.atualizarConsulta( request);
+            ConsultaResponseDTO atualizado = consultaService.atualizarConsulta( request);
             return Response.ok(atualizado).build();
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)

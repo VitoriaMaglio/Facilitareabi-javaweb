@@ -3,23 +3,23 @@ package br.com.facilitareabi.dto;
 import br.com.facilitareabi.enums.StatusConsultaEnum;
 import br.com.facilitareabi.model.Consulta;
 import br.com.facilitareabi.model.Paciente;
-import br.com.facilitareabi.model.Usuario;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
 
-public class ConsultaRequest {
+public class ConsultaRequestDTO {
 
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dataConsulta;
     private StatusConsultaEnum StatusConsulta;
     private String motivoFalta;
     private String especializacao;
     private Paciente paciente;
 
-    public ConsultaRequest() {
+    public ConsultaRequestDTO() {
     }
 
-    public ConsultaRequest(LocalDate dataConsulta, StatusConsultaEnum statusConsulta, String motivoFalta, String especializacao, Paciente paciente) {
+    public ConsultaRequestDTO(LocalDate dataConsulta, StatusConsultaEnum statusConsulta, String motivoFalta, String especializacao, Paciente paciente) {
         this.dataConsulta = dataConsulta;
         StatusConsulta = statusConsulta;
         this.motivoFalta = motivoFalta;
@@ -68,12 +68,12 @@ public class ConsultaRequest {
     }
 
     //Método conversão de usuário para usuario dto
-    public ConsultaRequest convertToConsultaRequestDTO(Consulta consulta){
-        return new ConsultaRequest(consulta.getDataConsulta(),consulta.getStatusConsulta(), consulta.getMotivoFalta(), consulta.getEspecializacao(), consulta.getPaciente());
+    public ConsultaRequestDTO convertToConsultaRequestDTO(Consulta consulta){
+        return new ConsultaRequestDTO(consulta.getDataConsulta(),consulta.getStatusConsulta(), consulta.getMotivoFalta(), consulta.getEspecializacao(), consulta.getPaciente());
     }
 
     //Método conversão de dto para usuario
-    public Consulta convertDtoToConsulta(ConsultaRequest dto){
+    public Consulta convertDtoToConsulta(ConsultaRequestDTO dto){
         return new Consulta(dto.dataConsulta,dto.StatusConsulta, dto.motivoFalta, dto.especializacao,dto.paciente);
     }
 

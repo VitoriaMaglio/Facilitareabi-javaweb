@@ -2,24 +2,22 @@ package br.com.facilitareabi.dto;
 
 import br.com.facilitareabi.model.Usuario;
 
-public class UsuarioRequest {
+public class UsuarioRequestDTO {
 
 
     private String login;
     private String senha;
     private String feedback;
 
-    public UsuarioRequest() {
+    public UsuarioRequestDTO() {
     }
 
-    public UsuarioRequest(String login, String senha, String feedback) {
+    public UsuarioRequestDTO(String login, String senha, String feedback) {
 
         this.login = login;
         this.senha = senha;
         this.feedback = feedback;
     }
-
-
 
     public String getLogin() {
         return login;
@@ -46,12 +44,12 @@ public class UsuarioRequest {
     }
 
     //Método conversão de usuário para usuario dto
-    public UsuarioRequest convertToUsuarioRequestDTO(Usuario usuario){
-        return new UsuarioRequest(usuario.getLogin(), usuario.getSenha(), usuario.getFeedback());
+    public UsuarioRequestDTO convertToUsuarioRequestDTO(Usuario usuario){
+        return new UsuarioRequestDTO(usuario.getLogin(), usuario.getSenha(), usuario.getFeedback());
     }
 
     //Método conversão de dto para usuario
-    public Usuario convertToUsuario(UsuarioRequest dto){
+    public Usuario convertToUsuario(UsuarioRequestDTO dto){
         return new Usuario( dto.login, dto.senha, dto.feedback);
     }
 

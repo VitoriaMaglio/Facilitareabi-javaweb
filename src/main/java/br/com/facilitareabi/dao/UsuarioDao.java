@@ -16,10 +16,13 @@ public class UsuarioDao {
         this.conn = ConnectionFactory.obterConexao();
     }
 
+
     public void cadastrarUsuario(Usuario usuario) {
         String sql = "INSERT INTO usuario (id, login, senha) VALUES (usuario_seq.NEXTVAL, ?, ?)";
-        try (
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+
+
             ps.setString(1, usuario.getLogin());
             ps.setString(2, usuario.getSenha());
             ps.executeUpdate();

@@ -1,12 +1,10 @@
 package br.com.facilitareabi.service;
 
-import br.com.facilitareabi.dto.ConsultaRequest;
-import br.com.facilitareabi.dto.ConsultaResponse;
-import br.com.facilitareabi.dto.UsuarioResponse;
+import br.com.facilitareabi.dto.ConsultaRequestDTO;
+import br.com.facilitareabi.dto.ConsultaResponseDTO;
 import br.com.facilitareabi.enums.StatusConsultaEnum;
 import br.com.facilitareabi.model.Consulta;
 import br.com.facilitareabi.model.Paciente;
-import br.com.facilitareabi.model.Usuario;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -35,29 +33,29 @@ public class ConsultaServiceImpl implements ConsultaService {
     }
 
     @Override
-    public ConsultaResponse buscarPorData(LocalDate data) throws SQLException {
-        ConsultaResponse dto = new ConsultaResponse();
+    public ConsultaResponseDTO buscarPorData(LocalDate data) throws SQLException {
+        ConsultaResponseDTO dto = new ConsultaResponseDTO();
         return dto.convertToConsultaResponseDTO(consultaDao.buscarPorData(data));
     }
 
     @Override
-    public void cadastrarConsulta(ConsultaRequest consultaRequest) {
-        consultaDao.cadastrarConsulta(consultaRequest.convertDtoToConsulta(consultaRequest));
+    public void cadastrarConsulta(ConsultaRequestDTO consultaRequestDTO) {
+        consultaDao.cadastrarConsulta(consultaRequestDTO.convertDtoToConsulta(consultaRequestDTO));
     }
 
     @Override
-    public List<ConsultaResponse> listarConsulta() {
+    public List<ConsultaResponseDTO> listarConsulta() {
         List<Consulta> consultas = consultaDao.listarConsultas();
-        List<ConsultaResponse> resposta = new ArrayList<>();
+        List<ConsultaResponseDTO> resposta = new ArrayList<>();
         for (Consulta c : consultas) {
-            ConsultaResponse dto = new ConsultaResponse().convertToConsultaResponseDTO(c);
+            ConsultaResponseDTO dto = new ConsultaResponseDTO().convertToConsultaResponseDTO(c);
             resposta.add(dto);
         }
         return resposta;
     }
 
     @Override
-    public ConsultaResponse atualizarConsulta( ConsultaRequest request) throws SQLException {
+    public ConsultaResponseDTO atualizarConsulta(ConsultaRequestDTO request) throws SQLException {
         Consulta consulta = new Consulta(request.getDataConsulta(),request.getStatusConsulta(), request.getEspecializacao(),request.getMotivoFalta(),request.getPaciente());
         consultaDao.atualizarConsulta(consulta);
         return null;
