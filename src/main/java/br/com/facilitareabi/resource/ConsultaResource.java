@@ -12,6 +12,10 @@ import jakarta.ws.rs.core.Response;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
+
+/**
+ * Classe representando um recurso REST
+ * */
 @Path("/consultas")
 public class ConsultaResource {
     private ConsultaService consultaService = new ConsultaServiceImpl();

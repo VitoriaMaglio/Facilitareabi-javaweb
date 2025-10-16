@@ -12,25 +12,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConsultaServiceImpl implements ConsultaService {
-    @Override
-    public boolean verificarAptoParaConsulta(Paciente paciente) {
-        if (paciente.getVulnerabilidade() != null
-                && paciente.getVulnerabilidade().equalsIgnoreCase("Não")) {
-            return false;
-        }
-        return true;
-    }
-    @Override
-    public void remarcarConsulta(Consulta consulta, LocalDate novaData, String motivoFalta) {
-        consulta.setDataConsulta(novaData);
-        consulta.setMotivoFalta(motivoFalta);
-        consulta.setStatusConsulta(StatusConsultaEnum.REMARCADA);
-    }
-    @Override
-    public void cancelarConsulta(Consulta consulta, String motivoFalta) {
-        consulta.setMotivoFalta(motivoFalta);
-        consulta.setStatusConsulta(StatusConsultaEnum.CANCELADA);
-    }
+    //@Override
+    //public boolean verificarAptoParaConsulta(Paciente paciente) {
+    //    if (paciente.getVulnerabilidade() != null
+   //             && paciente.getVulnerabilidade().equalsIgnoreCase("Não")) {
+   //         return false;
+   //     }
+   //     return true;
+   // }
+//    @Override
+//    public void remarcarConsulta(Consulta consulta, LocalDate novaData, String motivoFalta) {
+//        consulta.setDataConsulta(novaData);
+//        consulta.setMotivoFalta(motivoFalta);
+//        consulta.setStatusConsulta(StatusConsultaEnum.REMARCADA);
+//    }
+//    @Override
+//    public void cancelarConsulta(Consulta consulta, String motivoFalta) {
+//        consulta.setMotivoFalta(motivoFalta);
+//        consulta.setStatusConsulta(StatusConsultaEnum.CANCELADA);
+//    }
 
     @Override
     public ConsultaResponseDTO buscarPorData(LocalDate data) throws SQLException {

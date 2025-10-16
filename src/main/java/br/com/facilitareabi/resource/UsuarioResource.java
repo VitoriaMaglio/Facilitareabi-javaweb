@@ -11,7 +11,12 @@ import jakarta.ws.rs.core.Response;
 
 import java.sql.SQLException;
 import java.util.List;
-
+/**
+ * Classe representando um recurso REST para gerenciamento de usuários.
+ * Expõem endpoints HTTP cadastro, autenticação, listagem, alteração e exclusão de usuários.
+ *  @see UsuarioService
+ *  @see UsuarioDao
+ * */
 @Path("usuarios")
 public class UsuarioResource {
     private UsuarioService usuarioService = new UsuarioService();
@@ -20,8 +25,19 @@ public class UsuarioResource {
 
 
     //Criando métodos http
-
     //registrar um novo usuário no sistema
+
+
+    /**
+     * Cadastra um novo recurso usuário no sistema.
+     *
+     * @param request Objeto DTO com dados do usuário (login, senha, feedback)
+     * @return Response HTTP:
+     *         - 201 CREATED se o usuário for cadastrado com sucesso
+     *         - 400 BAD_REQUEST se houver inconsistência nos dados
+     *         - 500 INTERNAL_SERVER_ERROR em caso de erro no banco
+     * @throws SQLException se ocorrer erro de acesso ao banco de dados
+     */
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -45,6 +61,17 @@ public class UsuarioResource {
 
     //processo de autenticação;verifica as credenciais (login e senha) de um usuário já cadastrado.
 
+
+    /**
+     * Realiza a autenticação de um usuário já cadastrado.
+     * @param usuario DTO contendo login e senha
+     * @return Response HTTP:
+     *         - 201 CREATED se a autenticação for bem-sucedida
+     *         - 400 BAD_REQUEST se login ou senha forem inválidos
+     *         - 500 INTERNAL_SERVER_ERROR em caso de erro no banco
+     * @throws SQLException se ocorrer erro de acesso ao banco de dados
+     */
+
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -67,6 +94,13 @@ public class UsuarioResource {
         return null;
     }
 
+    /**
+     * Lista todos os usuários cadastrados no sistema.
+     * @return Response HTTP:
+     *         - 200 OK com a lista de usuários
+     *         - 500 INTERNAL_SERVER_ERROR em caso de erro no banco
+     */
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response listarUsuarios() {
@@ -79,6 +113,15 @@ public class UsuarioResource {
                     .build();
         }
     }
+
+    /**
+     * Busca um usuário pelo login.
+     * @param login Login do usuário a ser buscado
+     * @return Response HTTP:
+     *         - 200 OK com o usuário encontrado
+     *         - 404 NOT_FOUND se o usuário não existir
+     *         - 500 INTERNAL_SERVER_ERROR em caso de erro no banco
+     */
 
     @GET
     @Path("/{login}")
@@ -101,6 +144,15 @@ public class UsuarioResource {
         }
     }
     //Put
+
+    /**
+     * Altera os dados de um usuário existente.
+     * @param id ID do usuário a ser atualizado
+     * @param request DTO contendo os novos dados do usuário
+     * @return Response HTTP:
+     *         - 200 OK com o usuário atualizado
+     *         - 500 INTERNAL_SERVER_ERROR em caso de erro no banco
+     */
     @PUT
     @Path("/{id}")
     public Response alterarUsuario(@PathParam("id") int id, UsuarioRequestDTO request) {
@@ -115,6 +167,13 @@ public class UsuarioResource {
 
 
     // DELETE - Excluir usuário
+    /**
+     * Exclui um usuário do sistema.
+     * @param login Login do usuário a ser excluído
+     * @return Response HTTP:
+     *         - 200 OK se a exclusão for bem-sucedida
+     *         - 500 INTERNAL_SERVER_ERROR em caso de erro no banco
+     */
     @DELETE
     @Path("/{login}")
     public Response excluirUsua(@PathParam("login") String login) {

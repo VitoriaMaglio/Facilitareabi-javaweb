@@ -11,7 +11,9 @@ import jakarta.ws.rs.core.Response;
 
 import java.sql.SQLException;
 import java.util.List;
-
+/**
+ * Classe representando um recurso REST
+ * */
 @Path("pacientes")
 public class PacienteResource {
 

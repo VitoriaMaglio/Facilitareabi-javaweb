@@ -10,13 +10,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ConsultaService {
-    boolean verificarAptoParaConsulta(Paciente paciente);
-    void remarcarConsulta(Consulta consulta, LocalDate novaData, String motivoFalta);
-    void cancelarConsulta(Consulta consulta, String motivoFalta);
+    //boolean verificarAptoParaConsulta(Paciente paciente);
+    //void remarcarConsulta(Consulta consulta, LocalDate novaData, String motivoFalta);
+    //void cancelarConsulta(Consulta consulta, String motivoFalta);
     ConsultaDao consultaDao = new ConsultaDao();
     ConsultaResponseDTO buscarPorData(LocalDate data) throws SQLException;
     void cadastrarConsulta(ConsultaRequestDTO consultaRequestDTO);
-
     List<ConsultaResponseDTO> listarConsulta()  throws SQLException;
     ConsultaResponseDTO atualizarConsulta(ConsultaRequestDTO request) throws SQLException;
     void excluirConsultaData(int id) throws SQLException;
