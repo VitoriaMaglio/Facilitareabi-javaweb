@@ -12,16 +12,30 @@ import jakarta.ws.rs.core.Response;
 import java.sql.SQLException;
 import java.util.List;
 /**
- * Classe representando um recurso REST
+ * Classe representando um recurso REST para gerenciamento de pacientes.
+ * Esta classe expõe endpoints HTTP para cadastro, listagem, busca, atualização e exclusão de pacientes.
+ * @see PacienteService
+ * @see PacienteDao
  * */
 @Path("pacientes")
 public class PacienteResource {
 
-    PacienteDao pacienteDao = new PacienteDao();
-    Paciente paciente = new Paciente();
-    private PacienteService pacienteService = new PacienteService();
+    private final PacienteService pacienteService;
 
-    //Criando métodos http
+    public PacienteResource(PacienteService pacienteService) {
+        this.pacienteService = pacienteService;
+    }
+
+
+    /**
+     * Cadastra um novo paciente no sistema.
+     *
+     * @param request DTO contendo dados do paciente
+     * @return Response HTTP:
+     * - 201 CREATED se o paciente for cadastrado
+     * - 400 BAD_REQUEST se houver inconsistência nos dados
+     * - 500 INTERNAL_SERVER_ERROR em caso de erro no banco
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -30,22 +44,28 @@ public class PacienteResource {
             pacienteService.cadastrarPaciente(request);//chama o service resp por salvar no banco de dados
 
             PacienteResponseDTO cadastrado = pacienteService.buscarPorNome(request.getNome());
-            if (cadastrado != null){
+            if (cadastrado != null) {
                 return Response.status(Response.Status.CREATED).build();
             } else {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            }
 
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    //Método para retornar pacientes
+    /**
+     * Lista todos os pacientes cadastrados.
+     *
+     * @return Response HTTP:
+     * - 200 OK com a lista de pacientes
+     * - 500 INTERNAL_SERVER_ERROR em caso de erro no banco
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response listarPacientes(){
-        try{
+    public Response listarPacientes() {
+        try {
             List<PacienteResponseDTO> pacientes = pacienteService.listarPacientes();
             return Response.ok(pacientes).build();
 
@@ -56,16 +76,24 @@ public class PacienteResource {
         }
     }
 
-    //Método para retornar pacientes com base nome
+    /**
+     * Busca um paciente pelo nome.
+     *
+     * @param nome Nome do paciente
+     * @return Response HTTP:
+     * - 200 OK com o paciente encontrado
+     * - 404 NOT_FOUND se paciente não existir
+     * - 500 INTERNAL_SERVER_ERROR em caso de erro no banco
+     */
     @GET
     @Path("/{nome}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response buscarPacienteNome(@PathParam("nome")String nome){
-        try{
+    public Response buscarPacienteNome(@PathParam("nome") String nome) {
+        try {
             PacienteResponseDTO pacienteResponseDTO = pacienteService.buscarPorNome(nome);
-            if (pacienteResponseDTO != null){
+            if (pacienteResponseDTO != null) {
                 return Response.ok(pacienteResponseDTO).build();
-            }else
+            } else
                 return Response.status(Response.Status.NOT_FOUND).entity("{\"erro\": \"Paciente não encontrado\"}").build();
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -74,23 +102,38 @@ public class PacienteResource {
         }
     }
 
-    //PUT
+    /**
+     * Atualiza os dados de um paciente existente.
+     *
+     * @param id      ID do paciente
+     * @param request DTO contendo novos dados do paciente
+     * @return Response HTTP:
+     * - 200 OK se atualização for bem-sucedida
+     * - 500 INTERNAL_SERVER_ERROR em caso de erro no banco
+     */
     @PUT
     @Path("/{id_paciente}")
-    public Response alterarPaciente(@PathParam("id_paciente") int id, PacienteRequestDTO request){
-        try{
-            PacienteResponseDTO atualizado = pacienteService.atualizarPaciente(request);
+    public Response alterarPaciente(@PathParam("id_paciente") int id, PacienteRequestDTO request) {
+        try {
+            PacienteResponseDTO atualizado = pacienteService.atualizarPaciente(id, request);
             return Response.ok().entity("Paciente atualizado!").build();
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao atualizar paciente: " + e.getMessage()).build();
         }
     }
 
-    //Delete paciente
+    /**
+     * Exclui um paciente do sistema.
+     *
+     * @param nome Nome do paciente a ser excluído
+     * @return Response HTTP:
+     * - 200 OK se exclusão for bem-sucedida
+     * - 500 INTERNAL_SERVER_ERROR em caso de erro no banco
+     */
     @DELETE
     @Path("/{nome}")
-    public Response deletarPaciente(@PathParam("nome")String nome){
-        try{
+    public Response deletarPaciente(@PathParam("nome") String nome) {
+        try {
             pacienteService.excluirPaciente(nome);
             return Response.ok().entity("Paciente excluído!").build();
         } catch (SQLException e) {
@@ -98,37 +141,4 @@ public class PacienteResource {
         }
     }
 
-
-
-
-//    public void atualizarPaciente(Paciente paciente){
-//        System.out.println("Deseja atualizar seu cadastro?");
-//        String resp = scanner.nextLine();
-//        if (resp.equalsIgnoreCase("Sim")){
-//            if (paciente.getDataNascimento() == null) {
-//                System.out.println("Digite sua data de nascimento (dd/MM/yyyy):");
-//                String dataStr = scanner.nextLine();
-//                LocalDate data = LocalDate.parse(dataStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-//                paciente.setDataNascimento(data);
-//                cadastrarPaciente();
-//                pacienteDao.atualizarPaciente(paciente);
-//            }
-//        }else{
-//            System.out.println("Ok");
-//        }
-//    }
-//    public void excluirPaciente(){
-//        Paciente paciente = new Paciente();
-//        System.out.println("Deseja excluir um paciente?");
-//        String resp = scanner.nextLine();
-//        if (resp.equalsIgnoreCase("Sim")){
-//            System.out.println("Digite o nome do paciente que você deseja excluir: ");
-//            String nomeExcluir = scanner.nextLine();
-//            paciente.setNome(nomeExcluir);
-//            pacienteDao.excluirPaciente(paciente.getNome());
-//            System.out.println("Paciente excluído!");
-//        }else {
-//            System.out.println("Ok!");
-//        }
-//    }
 }

@@ -8,14 +8,14 @@ import java.util.List;
 
 public class PacienteDao {
 
-    private Connection conn;
-    public PacienteDao() {
-        this.conn = ConnectionFactory.obterConexao();
+    private final Connection conn;
+    public PacienteDao(Connection conn) {
+        this.conn = conn;
     }
-    public void cadastrarPaciente(Paciente paciente) {
+
+    public void cadastrarPaciente(Paciente paciente) throws SQLException{
         String sql = "INSERT INTO paciente (id_paciente, nome, dataNascimento, email, telefone, cpf, vulnerabilidade, aptidao) VALUES (paciente_seq.NEXTVAL,?, ?,?, ?, ?, ?,?)";
-        try (
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, paciente.getNome());
             ps.setDate(2, Date.valueOf(paciente.getDataNascimento()));
             ps.setString(3, paciente.getEmail());
@@ -30,16 +30,13 @@ public class PacienteDao {
                     paciente.setId_paciente(rs.getInt(1));
                 }
             }
-            System.out.println("Paciente cadastrado com ID: " + paciente.getId_paciente());
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
-    public Paciente buscarPorNome(String nome) {
+
+    public Paciente buscarPorNome(String nome)throws SQLException {
         String sql = "SELECT * FROM paciente WHERE nome = ?";
         Paciente paciente = null;
-        try (
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, nome);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -53,15 +50,12 @@ public class PacienteDao {
                     paciente.setVulnerabilidade(rs.getString("vulnerabilidade"));
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return paciente;
     }
-    public void atualizarPaciente(Paciente paciente) {
+    public void atualizarPaciente(Paciente paciente) throws SQLException{
         String sql = "UPDATE paciente SET nome = ?, dataNascimento = ?, email = ?, telefone = ?, cpf = ?, vulnerabilidade = ?, aptidao= ? WHERE id_paciente = ?";
-        try (
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, paciente.getNome());
             ps.setDate(2, Date.valueOf(paciente.getDataNascimento()));
             ps.setString(3, paciente.getEmail());
@@ -71,21 +65,16 @@ public class PacienteDao {
             ps.setString(7, paciente.getAptidao());
             ps.setInt(8, paciente.getId_paciente());
             ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
-    public void excluirPaciente(String nome) {
+    public void excluirPaciente(String nome)throws SQLException {
         String sql = "DELETE FROM paciente WHERE nome = ?";
-        try (
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, nome);
             ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
-    public List<Paciente> listarPacientes() {
+    public List<Paciente> listarPacientes()throws SQLException {
         String sql = "SELECT * FROM paciente";
         List<Paciente> lista = new ArrayList<>();
         try (
@@ -106,9 +95,6 @@ public class PacienteDao {
             for (Paciente p : lista) {
                 System.out.println(p);
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return lista;
     }

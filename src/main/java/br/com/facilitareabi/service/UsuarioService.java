@@ -4,20 +4,30 @@ import br.com.facilitareabi.dto.UsuarioLoginDto;
 import br.com.facilitareabi.dto.UsuarioRequestDTO;
 import br.com.facilitareabi.dto.UsuarioResponseDTO;
 import br.com.facilitareabi.model.Usuario;
+import br.com.facilitareabi.security.PasswordHash;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UsuarioService {
-    private UsuarioDao usuarioDao = new UsuarioDao();
+    private final UsuarioDao usuarioDao;
+
+    public UsuarioService(UsuarioDao usuarioDao) {
+        this.usuarioDao = usuarioDao;
+    }
 
     public String autenticarUsuario(UsuarioLoginDto dto) throws SQLException {
         return usuarioDao.autenticarUsuario(dto.convertToUsuario(dto));
    }
+
     public void cadastrarUsuario(UsuarioRequestDTO usuarioDto) throws SQLException {
+        if (usuarioDto.getLogin() == null ){
+            throw new IllegalArgumentException("Login é obrigatório");
+        }
+        String senhaCriptografada = PasswordHash.hashPassword(usuarioDto.getSenha());
         usuarioDao.cadastrarUsuario(usuarioDto.convertToUsuario(usuarioDto));
-        //chamar o dao para cadastrar usuário e converter os dados que vão entrar no banco em entidade
+
     }
 
     public UsuarioResponseDTO buscarLogin(String login) throws SQLException {
@@ -39,18 +49,6 @@ public class UsuarioService {
         return resposta;
     }
 
-//    public UsuarioResponse buscarUsuarioPorLogin(String login) throws SQLException {
-//        Usuario usuario = usuarioDao.buscarLogin(login);
-//        if (usuario != null) {
-//            UsuarioResponse dto = new UsuarioResponse();
-//            dto.setLogin(usuario.getLogin());
-//            dto.setFeedback(usuario.getFeedback());
-//            return dto;
-//        } else {
-//            return null;
-//        }
-//    }
-
     public UsuarioResponseDTO alterarUsuario(int id, UsuarioRequestDTO request) throws SQLException {
         Usuario usuario = new Usuario( id, request.getLogin(), request.getSenha(), request.getFeedback());
         usuarioDao.alterarUsuario(usuario);
@@ -59,14 +57,9 @@ public class UsuarioService {
         return null;
     }
 
-    // DELETE
     public void excluirUsua(String login) throws SQLException {
         usuarioDao.excluirUsua(login);
         System.out.println("Usuário excluído com sucesso!");
     }
-
-
-
-
 
 }

@@ -46,6 +46,12 @@
           <version>2.15.2</version> <!-- ajuste para a versão do seu Jackson -->
       </dependency>
 
+      <dependency>
+          <groupId>org.springframework.security</groupId>
+          <artifactId>spring-security-crypto</artifactId>
+          <version>5.8.0</version>
+      </dependency>
+
 
 
 

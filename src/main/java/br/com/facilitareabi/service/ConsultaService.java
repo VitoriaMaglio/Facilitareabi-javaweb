@@ -2,8 +2,6 @@ package br.com.facilitareabi.service;
 import br.com.facilitareabi.dao.ConsultaDao;
 import br.com.facilitareabi.dto.ConsultaRequestDTO;
 import br.com.facilitareabi.dto.ConsultaResponseDTO;
-import br.com.facilitareabi.model.Consulta;
-import br.com.facilitareabi.model.Paciente;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -15,8 +13,8 @@ public interface ConsultaService {
     //void cancelarConsulta(Consulta consulta, String motivoFalta);
     ConsultaDao consultaDao = new ConsultaDao();
     ConsultaResponseDTO buscarPorData(LocalDate data) throws SQLException;
-    void cadastrarConsulta(ConsultaRequestDTO consultaRequestDTO);
+    void cadastrarConsulta(ConsultaRequestDTO consultaRequestDTO) throws SQLException;
     List<ConsultaResponseDTO> listarConsulta()  throws SQLException;
-    ConsultaResponseDTO atualizarConsulta(ConsultaRequestDTO request) throws SQLException;
+    ConsultaResponseDTO atualizarConsulta(int id, ConsultaRequestDTO request) throws SQLException;
     void excluirConsultaData(int id) throws SQLException;
 }

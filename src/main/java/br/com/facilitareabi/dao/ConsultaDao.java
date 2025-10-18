@@ -10,47 +10,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConsultaDao {
-    private Connection conn;
-    public ConsultaDao() {
-        this.conn = ConnectionFactory.obterConexao();
+    private final Connection conn;
+    public ConsultaDao(Connection conn) {
+        this.conn = conn;
     }
 
-
-    public void cadastrarConsulta(Consulta consulta) {
-        String sql = "INSERT INTO consulta (dataConsulta, statusConsulta, motivoFalta, especializacao, id_paciente) "
-                + "VALUES (?, ?, ?, ?, ?)";
-
+    public void cadastrarConsulta(Consulta consulta) throws SQLException{
+        String sql = "INSERT INTO consulta (id,dataConsulta, statusConsulta, motivoFalta, especializacao, id_paciente) "
+                + "VALUES (consulta_seq.NEXTVAL,?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setDate(1, Date.valueOf(consulta.getDataConsulta()));
             ps.setString(2, consulta.getStatusConsulta().name()); // VARCHAR2 no DB
             ps.setString(3, consulta.getMotivoFalta());
             ps.setString(4, consulta.getEspecializacao());
-
             ps.setInt(5, consulta.getPaciente().getId_paciente()); // NUMBER no DB
-
             ps.executeUpdate();
-
-            try (ResultSet rs = ps.getGeneratedKeys()) {
+            try (PreparedStatement ps2 = conn.prepareStatement("SELECT consulta_seq.CURRVAL FROM dual");
+                 ResultSet rs = ps2.executeQuery()) {
                 if (rs.next()) {
                     consulta.setId(rs.getInt(1));
                 }
             }
-
-            System.out.println("Consulta cadastrada com ID: " + consulta.getId());
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
-
-
-
-    public Consulta buscarPorData(LocalDate data){
+    public Consulta buscarPorData(LocalDate data)throws SQLException{
         String sql = "SELECT * FROM consulta WHERE dataConsulta=?";
         Consulta consulta = null;
-        try (
-              PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             if (data != null) {
                 ps.setDate(1, Date.valueOf(data));
             } else {
@@ -69,12 +56,11 @@ public class ConsultaDao {
                     consulta.setPaciente(paciente);
                 }
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
         return consulta;
         }
-    public void atualizarConsulta(Consulta consulta) {
+
+    public void atualizarConsulta(Consulta consulta) throws SQLException{
         String sql = "UPDATE consulta SET dataConsulta = ?, statusConsulta = ?, motivoFalta = ?, especializacao = ?, id_paciente = ? WHERE id = ?";
         try (
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -88,11 +74,9 @@ public class ConsultaDao {
             if (linhasAfetadas == 0) {
                 System.out.println("Nenhuma consulta encontrada com o ID: " + consulta.getId());
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
-    public void excluirConsultaData(int id) {
+    public void excluirConsultaData(int id) throws SQLException{
         String sql = "DELETE FROM consulta WHERE id = ?";
         try (
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -101,11 +85,9 @@ public class ConsultaDao {
             if (linhasAfetadas == 0) {
                 System.out.println("Nenhuma consulta encontrada com a data: " + id);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
-    public List<Consulta> listarConsultas() {
+    public List<Consulta> listarConsultas() throws SQLException{
         String sql = "SELECT * FROM consulta";
         List<Consulta> consultas = new ArrayList<>();
         try (
@@ -126,8 +108,6 @@ public class ConsultaDao {
             for (Consulta c : consultas){
                 System.out.println(c);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }return consultas;
+        } return consultas;
     }
 }

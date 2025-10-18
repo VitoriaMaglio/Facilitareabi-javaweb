@@ -14,18 +14,30 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Classe representando um recurso REST
- * */
+ * Classe representando um recurso REST para gerenciamento de consultas.
+ *  Esta classe expõe endpoints HTTP para cadastro, listagem,
+ *  atualização e exclusão de consultas médicas.
+ *  @see ConsultaService
+ *  @see ConsultaServiceImpl
+ */
+
 @Path("/consultas")
 public class ConsultaResource {
-    private ConsultaService consultaService = new ConsultaServiceImpl();
+    private final ConsultaService consultaService;
 
-    Scanner leitor = new Scanner(System.in);
-    Consulta consulta = new Consulta();
+    public ConsultaResource(ConsultaService consultaService) {
+        this.consultaService = consultaService;
+    }
 
-
+    /**
+     * Cadastra uma nova consulta médica.
+     * @param consultaRequestDTO DTO contendo dados da consulta
+     * @return Response HTTP:
+     *         - 201 CREATED se a consulta for cadastrada
+     *         - 400 BAD_REQUEST se houver inconsistência nos dados
+     *         - 500 INTERNAL_SERVER_ERROR em caso de erro no banco
+     */
     @POST
-
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response cadastrarConsulta(ConsultaRequestDTO consultaRequestDTO){
@@ -41,6 +53,12 @@ public class ConsultaResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
+    /**
+     * Lista todas as consultas cadastradas.
+     * @return Response HTTP:
+     *         - 200 OK com a lista de consultas
+     *         - 500 INTERNAL_SERVER_ERROR em caso de erro no banco
+     */
 
     @GET
     @Path("/{cadastradas}")
@@ -56,11 +74,20 @@ public class ConsultaResource {
         }
     }
 
+    /**
+     * Atualiza os dados de uma consulta existente.
+     * @param id ID da consulta
+     * @param request DTO contendo novos dados da consulta
+     * @return Response HTTP:
+     *         - 200 OK com a consulta atualizada
+     *         - 500 INTERNAL_SERVER_ERROR em caso de erro no banco
+     */
+
     @PUT
     @Path("/{id}")
-    public Response alterarConsulta(@PathParam("id") int id, ConsultaRequestDTO request) {
+    public Response atualizarConsulta(@PathParam("id") int id, ConsultaRequestDTO request) {
         try {
-            ConsultaResponseDTO atualizado = consultaService.atualizarConsulta( request);
+            ConsultaResponseDTO atualizado = consultaService.atualizarConsulta(id, request);
             return Response.ok(atualizado).build();
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -68,7 +95,14 @@ public class ConsultaResource {
         }
     }
 
-    // DELETE
+    /**
+     * Exclui uma consulta do sistema.
+     *
+     * @param id ID da consulta a ser excluída
+     * @return Response HTTP:
+     *         - 200 OK se exclusão for bem-sucedida
+     *         - 500 INTERNAL_SERVER_ERROR em caso de erro no banco
+     */
     @DELETE
     @Path("/{id}")
     public Response excluirConsulta(@PathParam("id")int id) {
@@ -80,115 +114,4 @@ public class ConsultaResource {
                     .entity("Erro ao excluir consulta: " + e.getMessage()).build();
         }
     }
-
-
-
-
-
-
-//    public void verificarPaciente(Paciente paciente) {
-//        if (consultaService.verificarAptoParaConsulta(paciente)) {
-//            System.out.println("Paciente apto para teleconsulta.");
-//        } else {
-//            System.out.println("Paciente NÃO está apto para teleconsulta.");
-//        }
-//    }
-//    public void cadastrarConsulta(Paciente paciente) {
-//        consulta.setPaciente(paciente);
-//        System.out.printf("Vamos agendar uma teleconsulta!");
-//        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-//        LocalDate novaData = null;
-//        while (true) {
-//            System.out.println("Digite a data da consulta (dd/MM/yyyy):");
-//            String dataDigitada = scanner.nextLine();
-//            try {
-//                novaData = LocalDate.parse(dataDigitada, fmt);
-//                if (novaData.isBefore(LocalDate.now())) {
-//                    System.out.println("Erro: não é possível marcar uma consulta em uma data passada. Tente novamente.");
-//                } else {
-//                    break;
-//                }
-//            } catch (DateTimeParseException e) {
-//                System.out.println("Erro: formato de data inválido. Use dd/MM/yyyy.");
-//            }
-//        }
-//        consulta.setDataConsulta(novaData);
-//        System.out.println("Digite a especialização da consulta: (Psicologia, Fonoaudiologia ou Fisioterapia.)");
-//        String especializacao = scanner.nextLine();
-//        consulta.setEspecializacao(especializacao);
-//        System.out.println("Consulta agendada!");
-//        consulta.setStatusConsulta(StatusConsultaEnum.AGENDADA);
-//        consultaService.cadastrarConsulta(consulta);
-//        System.out.println("Lembre-se! Você tem uma consulta agendada para o dia " + consulta.getDataConsulta());
-//    }
-//    public void buscarConsulta(){
-//        ConsultaDao consultaDao = new ConsultaDao();
-//        System.out.println("Digite a data da consulta que você deseja buscar (dd/MM/yyyy): ");
-//        String dataDigitada = scanner.nextLine();
-//        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-//        try {
-//            LocalDate novaData = LocalDate.parse(dataDigitada, fmt);
-//            Consulta consulta = consultaDao.buscarPorData(novaData);
-//            if (consulta != null) {
-//                System.out.println("Consulta encontrada:");
-//                System.out.println("ID: " + consulta.getId());
-//                System.out.println("Data: " + consulta.getDataConsulta());
-//                System.out.println("Status: " + consulta.getStatusConsulta());
-//                System.out.println("Motivo da Falta: " + consulta.getMotivoFalta());
-//                System.out.println("Especialização: " + consulta.getEspecializacao());
-//                System.out.println("ID do Paciente: " + consulta.getPaciente().getId_paciente());
-//            } else {
-//                System.out.println("Nenhuma consulta encontrada para a data informada.");
-//            }
-//        } catch (DateTimeParseException e) {
-//            System.out.println("Data inválida. Use o formato dd/MM/yyyy.");
-//        }
-//    }
-//    public void remarcarConsulta(Consulta consulta, ConsultaDao consultaDao, Paciente paciente) {
-//        consulta.setPaciente(paciente);
-//        System.out.println("Você deseja remarcar (1) ou cancelar (2) a consulta?");
-//        int opcao = leitor.nextInt();
-//        leitor.nextLine();
-//        String motivoFalta = null;
-//        if (opcao == 1) {
-//            System.out.println("Digite a data da consulta que você deseja remarcar (dd/MM/yyyy): ");
-//            String dataCancelar = leitor.nextLine();
-//            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-//            LocalDate dataDigitada = LocalDate.parse(dataCancelar, fmt);
-//            Consulta consultaEncontrada = consultaDao.buscarPorData(dataDigitada);
-//
-//            System.out.print("Digite o motivo da sua falta: ");
-//            motivoFalta = leitor.nextLine();
-//            consulta.setMotivoFalta(motivoFalta);
-//            if (consultaEncontrada != null) {
-//                System.out.print("Digite a nova data da consulta (dd/MM/yyyy): ");
-//                String novaDataStr = leitor.nextLine();
-//                LocalDate novaData = LocalDate.parse(novaDataStr, fmt);
-//                consultaService.remarcarConsulta(consultaEncontrada, novaData, motivoFalta);
-//                consultaDao.atualizarConsulta(consultaEncontrada);
-//                consulta.setDataConsulta(novaData);
-//                System.out.println("Consulta remarcada com sucesso para " + novaData);
-//                consulta.setStatusConsulta(StatusConsultaEnum.REMARCADA);
-//                System.out.println("Lembre-se! Você tem uma consulta agendada para o dia " + consulta.getDataConsulta());
-//            } else {
-//                System.out.println("Nenhuma consulta encontrada nessa data.");
-//            }
-//        } else if (opcao == 2) {
-//            System.out.println("Digite a data da consulta que você deseja cancelar (dd/MM/yyyy): ");
-//            String dataCancelar = leitor.nextLine();
-//            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-//            LocalDate dataDigitada = LocalDate.parse(dataCancelar, fmt);
-//            Consulta consultaEncontrada = consultaDao.buscarPorData(dataDigitada);
-//            if (consultaEncontrada != null) {
-//                consultaService.cancelarConsulta(consultaEncontrada, motivoFalta);
-//                consultaDao.excluirConsultaData(consultaEncontrada.getId());
-//                System.out.println("Consulta cancelada com sucesso!");
-//                consulta.setStatusConsulta(StatusConsultaEnum.CANCELADA);
-//            } else {
-//                System.out.println("Nenhuma consulta encontrada nessa data.");
-//            }
-//        } else {
-//            System.out.println("Opção inválida!");
-//        }
-//    }
 }
