@@ -1,7 +1,10 @@
 package br.com.facilitareabi.dto;
 
 import br.com.facilitareabi.model.Usuario;
-
+/**
+ * DTO de requisição para a entidade Usuario.
+ * Contém dados que o cliente envia para criar ou atualizar um usuário.
+ */
 public class UsuarioRequestDTO {
 
 
@@ -43,12 +46,22 @@ public class UsuarioRequestDTO {
         this.feedback = feedback;
     }
 
-    //Método conversão de usuário para usuario dto
+    /**
+     * Converte um objeto Usuario em UsuarioRequestDTO.
+     *
+     * @param usuario Entidade Usuario
+     * @return DTO correspondente
+     */
     public UsuarioRequestDTO convertToUsuarioRequestDTO(Usuario usuario){
         return new UsuarioRequestDTO(usuario.getLogin(), usuario.getSenha(), usuario.getFeedback());
     }
 
-    //Método conversão de dto para usuario
+    /**
+     * Converte este DTO em objeto Usuario.
+     *
+     * @param dto DTO de usuário
+     * @return Objeto Usuario correspondente
+     */
     public Usuario convertToUsuario(UsuarioRequestDTO dto){
         return new Usuario( dto.login, dto.senha, dto.feedback);
     }

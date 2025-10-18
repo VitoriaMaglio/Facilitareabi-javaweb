@@ -4,7 +4,10 @@ import br.com.facilitareabi.model.Paciente;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
-
+/**
+ * DTO de requisição para a entidade Paciente.
+ * Contém dados que o cliente envia para criar ou atualizar um usuário.
+ */
 public class PacienteRequestDTO {
 
 
@@ -86,12 +89,22 @@ public class PacienteRequestDTO {
         this.aptidao = aptidao;
     }
 
-    //Método converter paciente para pacientedto
+    /**
+     * Converte um objeto Paciente em PacienteRequestDTO.
+     *
+     * @param paciente Entidade Paciente
+     * @return DTO correspondente
+     */
     public PacienteRequestDTO convertToPacienteDto(Paciente paciente){
         return new PacienteRequestDTO(paciente.getNome(), paciente.getCpf(), paciente.getDataNascimento(), paciente.getTelefone(),paciente.getEmail(),paciente.getVulnerabilidade(), paciente.getAptidao());
     }
 
-    //Método converter pacientedto para paciente
+    /**
+     * Converte este DTO em objeto Paciente.
+     *
+     * @param dto DTO de paciente
+     * @return Objeto Paciente correspondente
+     */
     public Paciente convertDtoToPaciente(PacienteRequestDTO dto){
         return new Paciente(dto.nome, dto.cpf,dto.dataNascimento,dto.telefone,dto.email, dto.vulnerabilidade, dto.aptidao);
     }

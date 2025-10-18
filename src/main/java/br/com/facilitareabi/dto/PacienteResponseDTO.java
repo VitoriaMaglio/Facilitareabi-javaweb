@@ -1,7 +1,10 @@
 package br.com.facilitareabi.dto;
 
 import br.com.facilitareabi.model.Paciente;
-
+/**
+ * DTO de resposta para a entidade Paciente.
+ * Contém apenas dados que serão expostos ao cliente.
+ */
 public class PacienteResponseDTO {
 
 
@@ -52,13 +55,24 @@ public class PacienteResponseDTO {
         this.aptidao = aptidao;
     }
 
-    //Método converter paciente para pacientedto
+    /**
+     * Converte um objeto Paciente em PacienteResponseDTO.
+     *
+     * @param paciente Entidade Paciente
+     * @return DTO correspondente
+     */
     public PacienteResponseDTO convertToPacienteDto(Paciente paciente){
         if(paciente == null) return null;
         return new PacienteResponseDTO(paciente.getNome(), paciente.getCpf(),paciente.getVulnerabilidade(), paciente.getAptidao());
     }
 
-    //Método converter pacientedto para paciente
+
+    /**
+     * Converte este DTO em objeto Usuario.
+     *
+     * @param dto DTO de paciente
+     * @return Objeto Paciente correspondente
+     */
     public Paciente convertDtoToPaciente(PacienteResponseDTO dto){
         return new Paciente(dto.nome, dto.cpf, dto.vulnerabilidade, dto.aptidao);
     }

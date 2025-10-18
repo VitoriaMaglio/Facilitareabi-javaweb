@@ -5,7 +5,10 @@ import br.com.facilitareabi.model.Consulta;
 import br.com.facilitareabi.model.Paciente;
 
 import java.time.LocalDate;
-
+/**
+ * DTO de resposta para a entidade Consulta.
+ * Contém apenas dados que serão expostos ao cliente.
+ */
 public class ConsultaResponseDTO {
 
     private LocalDate dataConsulta;
@@ -57,13 +60,24 @@ public class ConsultaResponseDTO {
         this.paciente = paciente;
     }
 
-    //Método conversão de usuário para usuario dto
+    /**
+     * Converte um objeto Consulta em ConsultaResponseDTO.
+     *
+     * @param consulta Entidade Consulta
+     * @return DTO correspondente
+     */
     public ConsultaResponseDTO convertToConsultaResponseDTO(Consulta consulta){
         if(consulta == null) return null;
         return new ConsultaResponseDTO(consulta.getDataConsulta(),consulta.getStatusConsulta(), consulta.getEspecializacao(), consulta.getPaciente());
     }
 
-    //Método conversão de dto para usuario
+
+    /**
+     * Converte este DTO em objeto Usuario.
+     *
+     * @param dto DTO de consulta
+     * @return Objeto Consulta correspondente
+     */
     public Consulta convertDtoToConsulta(ConsultaResponseDTO dto){
         return new Consulta(dto.dataConsulta,dto.StatusConsulta, dto.especializacao,dto.paciente);
     }

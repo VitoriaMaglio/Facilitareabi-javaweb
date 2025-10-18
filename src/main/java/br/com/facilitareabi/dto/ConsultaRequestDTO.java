@@ -6,7 +6,10 @@ import br.com.facilitareabi.model.Paciente;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
-
+/**
+ * DTO de requisição para a entidade Consulta.
+ * Contém dados que o cliente envia para criar ou atualizar um usuário.
+ */
 public class ConsultaRequestDTO {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -67,12 +70,22 @@ public class ConsultaRequestDTO {
         this.paciente = paciente;
     }
 
-    //Método conversão de usuário para usuario dto
+    /**
+     * Converte um objeto Consulta em ConsultaRequestDTO.
+     *
+     * @param consulta Entidade Usuario
+     * @return DTO correspondente
+     */
     public ConsultaRequestDTO convertToConsultaRequestDTO(Consulta consulta){
         return new ConsultaRequestDTO(consulta.getDataConsulta(),consulta.getStatusConsulta(), consulta.getMotivoFalta(), consulta.getEspecializacao(), consulta.getPaciente());
     }
 
-    //Método conversão de dto para usuario
+    /**
+     * Converte este DTO em objeto Consulta.
+     *
+     * @param dto DTO de consulta
+     * @return Objeto Consulta correspondente
+     */
     public Consulta convertDtoToConsulta(ConsultaRequestDTO dto){
         return new Consulta(dto.dataConsulta,dto.StatusConsulta, dto.motivoFalta, dto.especializacao,dto.paciente);
     }

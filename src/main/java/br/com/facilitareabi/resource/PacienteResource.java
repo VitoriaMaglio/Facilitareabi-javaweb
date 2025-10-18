@@ -1,14 +1,19 @@
 package br.com.facilitareabi.resource;
 
+import br.com.facilitareabi.dao.UsuarioDao;
 import br.com.facilitareabi.dto.PacienteRequestDTO;
 import br.com.facilitareabi.dto.PacienteResponseDTO;
 import br.com.facilitareabi.dao.PacienteDao;
 import br.com.facilitareabi.model.Paciente;
 import br.com.facilitareabi.service.PacienteService;
+import br.com.facilitareabi.service.UsuarioService;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 /**
@@ -20,13 +25,9 @@ import java.util.List;
 @Path("pacientes")
 public class PacienteResource {
 
-    private final PacienteService pacienteService;
-
-    public PacienteResource(PacienteService pacienteService) {
-        this.pacienteService = pacienteService;
-    }
-
-
+    PacienteDao pacienteDao = new PacienteDao();
+    Paciente paciente = new Paciente();
+    private PacienteService pacienteService = new PacienteService();
     /**
      * Cadastra um novo paciente no sistema.
      *

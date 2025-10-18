@@ -8,13 +8,24 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Classe de acesso a dados (DAO) responsável pelas operações CRUD da entidade Consulta.
+ * Cada método interage com a tabela "consulta" no banco de dados usando JDBC.
+ */
 public class ConsultaDao {
-    private final Connection conn;
-    public ConsultaDao(Connection conn) {
-        this.conn = conn;
+
+
+    private Connection conn;
+    public ConsultaDao() {
+        this.conn = ConnectionFactory.obterConexao();
     }
 
+    /**
+     * Cadastra uma nova consulta no banco.
+     *
+     * @param consulta Objeto Consulta a ser cadastrado
+     * @throws SQLException Caso ocorra erro de acesso ao banco
+     */
     public void cadastrarConsulta(Consulta consulta) throws SQLException{
         String sql = "INSERT INTO consulta (id,dataConsulta, statusConsulta, motivoFalta, especializacao, id_paciente) "
                 + "VALUES (consulta_seq.NEXTVAL,?, ?, ?, ?, ?)";
@@ -34,6 +45,13 @@ public class ConsultaDao {
         }
     }
 
+    /**
+     * Busca uma consulta por data.
+     *
+     * @param data Data da consulta
+     * @return Objeto Consulta encontrado ou null se não existir
+     * @throws SQLException Caso ocorra erro de acesso ao banco
+     */
     public Consulta buscarPorData(LocalDate data)throws SQLException{
         String sql = "SELECT * FROM consulta WHERE dataConsulta=?";
         Consulta consulta = null;
@@ -60,6 +78,12 @@ public class ConsultaDao {
         return consulta;
         }
 
+    /**
+     * Atualiza os dados de uma consulta existente.
+     *
+     * @param consulta Objeto Consulta com ID existente
+     * @throws SQLException Caso ocorra erro de acesso ao banco
+     */
     public void atualizarConsulta(Consulta consulta) throws SQLException{
         String sql = "UPDATE consulta SET dataConsulta = ?, statusConsulta = ?, motivoFalta = ?, especializacao = ?, id_paciente = ? WHERE id = ?";
         try (
@@ -76,6 +100,13 @@ public class ConsultaDao {
             }
         }
     }
+
+    /**
+     * Exclui uma consulta pelo ID.
+     *
+     * @param id ID da consulta a ser removida
+     * @throws SQLException Caso ocorra erro de acesso ao banco
+     */
     public void excluirConsultaData(int id) throws SQLException{
         String sql = "DELETE FROM consulta WHERE id = ?";
         try (
@@ -87,6 +118,13 @@ public class ConsultaDao {
             }
         }
     }
+
+    /**
+     * Lista todas as consultas cadastradas no banco.
+     *
+     * @return Lista de objetos Consulta
+     * @throws SQLException Caso ocorra erro de acesso ao banco
+     */
     public List<Consulta> listarConsultas() throws SQLException{
         String sql = "SELECT * FROM consulta";
         List<Consulta> consultas = new ArrayList<>();

@@ -5,10 +5,13 @@ import br.com.facilitareabi.dto.UsuarioLoginDto;
 import br.com.facilitareabi.dto.UsuarioRequestDTO;
 import br.com.facilitareabi.dto.UsuarioResponseDTO;
 import br.com.facilitareabi.service.UsuarioService;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 /**
@@ -19,11 +22,10 @@ import java.util.List;
  * */
 @Path("usuarios")
 public class UsuarioResource {
-    private final UsuarioService usuarioService;
 
-    public UsuarioResource(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
+    private UsuarioService usuarioService = new UsuarioService();
+
+
 
     /**
      * Cadastra um novo recurso usuário no sistema.
@@ -35,7 +37,6 @@ public class UsuarioResource {
      * - 500 INTERNAL_SERVER_ERROR em caso de erro no banco
      * @throws SQLException se ocorrer erro de acesso ao banco de dados
      */
-
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

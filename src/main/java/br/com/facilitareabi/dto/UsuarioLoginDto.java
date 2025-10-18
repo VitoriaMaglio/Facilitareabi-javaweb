@@ -1,7 +1,10 @@
 package br.com.facilitareabi.dto;
 
 import br.com.facilitareabi.model.Usuario;
-
+/**
+ * DTO de login para a entidade Usuario.
+ * Contém apenas login e senha, usado para autenticação.
+ */
 public class UsuarioLoginDto {
 
     private String login;
@@ -30,6 +33,12 @@ public class UsuarioLoginDto {
         this.senha = senha;
     }
 
+    /**
+     * Converte este DTO em objeto Usuario.
+     *
+     * @param dto DTO de login
+     * @return Objeto Usuario correspondente
+     */
     public Usuario convertToUsuario(UsuarioLoginDto dto) {
         return new Usuario(dto.login, dto.senha);
     }

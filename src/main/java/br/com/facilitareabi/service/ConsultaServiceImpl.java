@@ -1,15 +1,27 @@
 package br.com.facilitareabi.service;
 
+import br.com.facilitareabi.dao.ConsultaDao;
 import br.com.facilitareabi.dto.ConsultaRequestDTO;
 import br.com.facilitareabi.dto.ConsultaResponseDTO;
 import br.com.facilitareabi.model.Consulta;
-
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementação da interface ConsultaService.
+ * Encapsula a lógica de negócio e delega operações ao ConsultaDao.
+ */
 public class ConsultaServiceImpl implements ConsultaService {
+
+
+    private  ConsultaDao consultaDao;
+    public ConsultaServiceImpl() {
+        this.consultaDao = new ConsultaDao();
+    }
+
+
 
     @Override
     public ConsultaResponseDTO buscarPorData(LocalDate data) throws SQLException {

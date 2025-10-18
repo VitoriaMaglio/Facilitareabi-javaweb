@@ -9,14 +9,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Classe de acesso a dados (DAO) responsável por operações CRUD para a entidade Usuario.
+ * Cada método interage com a tabela "usuario" do banco de dados usando JDBC.
+ */
 public class UsuarioDao {
 
-    private final Connection conn;
-    public UsuarioDao(Connection conn) {
-        this.conn = conn;
+    private  Connection conn;
+
+    public UsuarioDao() {
+        this.conn = ConnectionFactory.obterConexao();
     }
 
+    /**
+     * Cadastra um novo usuário no banco de dados.
+     *
+     * @param usuario Objeto Usuario a ser cadastrado
+     * @throws SQLException Caso ocorra algum erro de acesso ao banco
+     */
     public void cadastrarUsuario(Usuario usuario) throws SQLException{
         String sql = "INSERT INTO usuario (id, login, senha) VALUES (usuario_seq.NEXTVAL, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -31,6 +41,14 @@ public class UsuarioDao {
             }
         }
     }
+
+    /**
+     * Busca um usuário pelo login.
+     *
+     * @param login Login do usuário
+     * @return Usuario encontrado ou null se não existir
+     * @throws SQLException Caso ocorra erro de acesso ao banco
+     */
     public Usuario buscarLogin(String login) throws SQLException{
         String sql = "SELECT * FROM USUARIO WHERE LOGIN = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -47,6 +65,12 @@ public class UsuarioDao {
         return null;
     }
 
+    /**
+     * Lista todos os usuários cadastrados.
+     *
+     * @return Lista de objetos Usuario
+     * @throws SQLException Caso ocorra erro de acesso ao banco
+     */
     public List<Usuario> listarUsuarios() throws SQLException {
         List<Usuario> usuarios = new ArrayList<>();
         String sql = "SELECT * FROM usuario";
@@ -63,6 +87,13 @@ public class UsuarioDao {
         }
     }
 
+    /**
+     * Atualiza o feedback de um usuário específico.
+     *
+     * @param idUsuario ID do usuário
+     * @param feedback Novo feedback
+     * @throws SQLException Caso ocorra erro de acesso ao banco
+     */
     public void atualizarFeedback(int idUsuario, String feedback)throws SQLException {
         String sql = "UPDATE usuario SET feedback = ? WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -72,6 +103,13 @@ public class UsuarioDao {
 
         }
     }
+
+    /**
+     * Altera dados de login e senha de um usuário existente.
+     *
+     * @param usuario Objeto Usuario com ID existente
+     * @throws SQLException Caso ocorra erro de acesso ao banco
+     */
     public void alterarUsuario(Usuario usuario)throws SQLException{
         String sql = "UPDATE USUARIO SET LOGIN = ?, SENHA = ? WHERE ID=?";
         try(PreparedStatement comandoSQL = conn.prepareStatement(sql)){
@@ -81,20 +119,13 @@ public class UsuarioDao {
             comandoSQL.executeUpdate();
         }
     }
-    public boolean existeUsuarioPorLogin(String login) {
-        String sql = "SELECT COUNT(*) FROM USUARIO WHERE LOGIN = ?";
-        try (
-             PreparedStatement comandoSQL = conn.prepareStatement(sql)) {
-            comandoSQL.setString(1, login);
-            ResultSet rs = comandoSQL.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0; // Se COUNT > 0, usuário existe
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Erro ao verificar usuário: " + e.getMessage(), e);
-        }
-        return false;
-    }
+
+    /**
+     * Exclui um usuário pelo login.
+     *
+     * @param login Login do usuário a ser removido
+     * @throws SQLException Caso ocorra erro de acesso ao banco
+     */
     public void excluirUsua(String login)throws SQLException {
         String sql = "DELETE FROM USUARIO WHERE LOGIN=?";
         try (PreparedStatement comandoSQL = conn.prepareStatement((sql))) {
@@ -108,6 +139,12 @@ public class UsuarioDao {
         }
     }
 
+    /**
+     * Autentica um usuário comparando a senha informada com a senha criptografada no banco.
+     *
+     * @param usuario Objeto Usuario com login e senha informados
+     * @return Mensagem de sucesso ou erro
+     */
     public String autenticarUsuario(Usuario usuario) {
         String sql = "SELECT * FROM tb_usuario WHERE login = ? ";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
