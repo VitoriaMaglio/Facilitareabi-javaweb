@@ -15,13 +15,10 @@ import java.util.List;
  */
 public class ConsultaServiceImpl implements ConsultaService {
 
-
     private  ConsultaDao consultaDao;
     public ConsultaServiceImpl() {
         this.consultaDao = new ConsultaDao();
     }
-
-
 
     @Override
     public ConsultaResponseDTO buscarPorData(LocalDate data) throws SQLException {

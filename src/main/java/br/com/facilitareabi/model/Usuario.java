@@ -1,9 +1,5 @@
 package br.com.facilitareabi.model;
 
-import br.com.facilitareabi.enums.StatusConsultaEnum;
-
-import java.time.LocalDate;
-
 public class Usuario {
     //atributtes
     private int id;

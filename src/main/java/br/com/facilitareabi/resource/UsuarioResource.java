@@ -5,13 +5,11 @@ import br.com.facilitareabi.dto.UsuarioLoginDto;
 import br.com.facilitareabi.dto.UsuarioRequestDTO;
 import br.com.facilitareabi.dto.UsuarioResponseDTO;
 import br.com.facilitareabi.service.UsuarioService;
-import jakarta.inject.Inject;
+
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 /**
