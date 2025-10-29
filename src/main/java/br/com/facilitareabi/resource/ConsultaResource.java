@@ -1,23 +1,20 @@
 package br.com.facilitareabi.resource;
 
-import br.com.facilitareabi.dao.ConsultaDao;
-import br.com.facilitareabi.dao.PacienteDao;
+
 import br.com.facilitareabi.dto.ConsultaRequestDTO;
 import br.com.facilitareabi.dto.ConsultaResponseDTO;
-import br.com.facilitareabi.model.Consulta;
+
 import br.com.facilitareabi.service.ConsultaService;
 import br.com.facilitareabi.service.ConsultaServiceImpl;
-import br.com.facilitareabi.service.PacienteService;
-import jakarta.inject.Inject;
+
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Scanner;
+
 
 /**
  * Classe representando um recurso REST para gerenciamento de consultas.

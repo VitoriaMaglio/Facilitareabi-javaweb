@@ -44,6 +44,7 @@ public class UsuarioService {
             throw new IllegalArgumentException("Login é obrigatório");
         }
         String senhaCriptografada = PasswordHash.hashPassword(usuarioDto.getSenha());
+        usuarioDto.setSenha(senhaCriptografada);
         usuarioDao.cadastrarUsuario(usuarioDto.convertToUsuario(usuarioDto));
     }
 
@@ -71,7 +72,7 @@ public class UsuarioService {
         for (Usuario u : usuarios) {
             UsuarioResponseDTO dto = new UsuarioResponseDTO();
             dto.setLogin(u.getLogin());
-            dto.setLogin(u.getLogin());
+            dto.setFeedback(u.getFeedback());
             resposta.add(dto);
         }
         return resposta;
@@ -89,8 +90,6 @@ public class UsuarioService {
     public UsuarioResponseDTO alterarUsuario(int id, UsuarioRequestDTO request) throws SQLException {
         Usuario usuario = new Usuario( id, request.getLogin(), request.getSenha(), request.getFeedback());
         usuarioDao.alterarUsuario(usuario);
-        System.out.println("Usuário atualizado com sucesso!");
-
         return null;
     }
 
@@ -103,7 +102,6 @@ public class UsuarioService {
      */
     public void excluirUsua(String login) throws SQLException {
         usuarioDao.excluirUsua(login);
-        System.out.println("Usuário excluído com sucesso!");
     }
 
 }

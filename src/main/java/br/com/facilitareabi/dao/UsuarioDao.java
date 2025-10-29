@@ -28,10 +28,11 @@ public class UsuarioDao {
      * @throws SQLException Caso ocorra algum erro de acesso ao banco
      */
     public void cadastrarUsuario(Usuario usuario) throws SQLException{
-        String sql = "INSERT INTO usuario (id, login, senha) VALUES (usuario_seq.NEXTVAL, ?, ?)";
+        String sql = "INSERT INTO usuario (id, login, senha, feedback) VALUES (usuario_seq.NEXTVAL, ?, ?,?)";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, usuario.getLogin());
             ps.setString(2, usuario.getSenha());
+            ps.setString(3,usuario.getFeedback());
             ps.executeUpdate();
             try (PreparedStatement psId = conn.prepareStatement("SELECT usuario_seq.CURRVAL FROM dual");
                  ResultSet rs = psId.executeQuery()) {

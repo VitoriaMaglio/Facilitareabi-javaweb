@@ -31,10 +31,10 @@ public class ConsultaDao {
                 + "VALUES (consulta_seq.NEXTVAL,?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setDate(1, Date.valueOf(consulta.getDataConsulta()));
-            ps.setString(2, consulta.getStatusConsulta().name()); // VARCHAR2 no DB
+            ps.setString(2, consulta.getStatusConsulta().name());
             ps.setString(3, consulta.getMotivoFalta());
             ps.setString(4, consulta.getEspecializacao());
-            ps.setInt(5, consulta.getPaciente().getId_paciente()); // NUMBER no DB
+            ps.setInt(5, consulta.getPaciente().getId_paciente());
             ps.executeUpdate();
             try (PreparedStatement ps2 = conn.prepareStatement("SELECT consulta_seq.CURRVAL FROM dual");
                  ResultSet rs = ps2.executeQuery()) {
@@ -126,7 +126,9 @@ public class ConsultaDao {
      * @throws SQLException Caso ocorra erro de acesso ao banco
      */
     public List<Consulta> listarConsultas() throws SQLException{
-        String sql = "SELECT * FROM consulta";
+        String sql = "SELECT c.*, p.nome, p.cpf, p.dataNascimento, p.telefone, p.email, p.vulnerabilidade, p.aptidao\n" +
+                "FROM consulta c\n" +
+                "JOIN paciente p ON c.id_paciente = p.id_paciente";
         List<Consulta> consultas = new ArrayList<>();
         try (
              PreparedStatement ps = conn.prepareStatement(sql);
@@ -140,6 +142,13 @@ public class ConsultaDao {
                 consulta.setEspecializacao(rs.getString("especializacao"));
                 Paciente paciente = new Paciente();
                 paciente.setId_paciente(rs.getInt("id_paciente"));
+                paciente.setNome(rs.getString("nome"));
+                paciente.setCpf(rs.getString("cpf"));
+                paciente.setDataNascimento(rs.getDate("dataNascimento") != null ? rs.getDate("dataNascimento").toLocalDate() : null);
+                paciente.setTelefone(rs.getString("telefone"));
+                paciente.setEmail(rs.getString("email"));
+                paciente.setVulnerabilidade(rs.getString("vulnerabilidade"));
+                paciente.setAptidao(rs.getString("aptidao"));
                 consulta.setPaciente(paciente);
                 consultas.add(consulta);
             }
