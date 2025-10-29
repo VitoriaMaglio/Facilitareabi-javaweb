@@ -92,7 +92,7 @@ O sistema adota uma **arquitetura em camadas, garantindo separação de responsa
 ## 🧮 Tecnologias Utilizadas
 
 - **Java 17+**
-- **Spring Boot / Jakarta EE** (para criação dos endpoints REST)
+- **Jakarta EE** (para criação dos endpoints REST)
 - **DAO Pattern** (para manipulação de dados)
 - **BCrypt / Hash** (para criptografia de senhas)
 - **MySQL** (banco de dados relacional)
@@ -111,12 +111,10 @@ O sistema adota uma **arquitetura em camadas, garantindo separação de responsa
 
 3. Atualize as credenciais no arquivo de configuração (ex: application.properties).
 
-4. Compile e execute a aplicação:
-    mvn spring-boot:run
+4. Compile e execute a aplicação
    
 5.Acesse os endpoints via Postman em:
   http://localhost:8080
-
 
   👩‍💻 Autora
 Vitória Valentina Maglio
