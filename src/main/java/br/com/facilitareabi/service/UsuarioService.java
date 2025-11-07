@@ -16,8 +16,6 @@ import java.util.List;
 public class UsuarioService {
 
     private UsuarioDao usuarioDao;
-
-
     public UsuarioService() {
         this.usuarioDao = new UsuarioDao();
     }
@@ -25,12 +23,12 @@ public class UsuarioService {
     /**
      * Autentica um usuário.
      *
-     * @param dto DTO com login e senha
+     * //@param dto DTO com login e senha
      * @return Mensagem de autenticação
      * @throws SQLException Caso ocorra erro de acesso ao banco
      */
-    public String autenticarUsuario(UsuarioLoginDto dto) throws SQLException {
-        return usuarioDao.autenticarUsuario(dto.convertToUsuario(dto));
+    public String autenticarUsuario(Usuario usuario) throws SQLException {
+        return usuarioDao.autenticarUsuario(usuario);
    }
 
     /**
@@ -92,7 +90,6 @@ public class UsuarioService {
         usuarioDao.alterarUsuario(usuario);
         return null;
     }
-
 
     /**
      * Exclui usuário pelo login.

@@ -10,7 +10,6 @@ import java.time.LocalDate;
  */
 public class PacienteRequestDTO {
 
-
     private String nome;
     private String cpf;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")

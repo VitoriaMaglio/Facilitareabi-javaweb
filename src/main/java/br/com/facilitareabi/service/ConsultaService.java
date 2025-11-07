@@ -1,9 +1,6 @@
 package br.com.facilitareabi.service;
-import br.com.facilitareabi.dao.ConsultaDao;
 import br.com.facilitareabi.dto.ConsultaRequestDTO;
 import br.com.facilitareabi.dto.ConsultaResponseDTO;
-
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;

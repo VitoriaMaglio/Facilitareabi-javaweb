@@ -10,8 +10,6 @@ import java.util.List;
  * Cada método interage com a tabela "paciente" do banco de dados usando JDBC.
  */
 public class PacienteDao {
-
-
     private  Connection conn;
     public PacienteDao() {
         this.conn = ConnectionFactory.obterConexao();
@@ -42,7 +40,6 @@ public class PacienteDao {
             }
         }
     }
-
     /**
      * Busca um paciente pelo nome.
      *
@@ -70,7 +67,6 @@ public class PacienteDao {
         }
         return paciente;
     }
-
     /**
      * Atualiza os dados de um paciente existente.
      *
@@ -91,7 +87,6 @@ public class PacienteDao {
             ps.executeUpdate();
         }
     }
-
     /**
      * Exclui um paciente pelo nome.
      *
@@ -105,7 +100,6 @@ public class PacienteDao {
             ps.executeUpdate();
         }
     }
-
     /**
      * Lista todos os pacientes cadastrados no banco.
      *

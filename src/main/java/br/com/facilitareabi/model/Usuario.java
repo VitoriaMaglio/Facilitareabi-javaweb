@@ -21,13 +21,12 @@ public class Usuario {
         this.feedback = feedback;
     }
 
+
     public Usuario(String login, String senha, String feedback) {
         this.login = login;
         this.senha = senha;
         this.feedback = feedback;
     }
-
-
 
     //getters e setters
     public int getId() {

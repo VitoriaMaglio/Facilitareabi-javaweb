@@ -36,10 +36,13 @@ public class UsuarioLoginDto {
     /**
      * Converte este DTO em objeto Usuario.
      *
-     * @param dto DTO de login
+     * @param
      * @return Objeto Usuario correspondente
      */
-    public Usuario convertToUsuario(UsuarioLoginDto dto) {
-        return new Usuario(dto.login, dto.senha);
+    public Usuario convertToUsuario() {
+        Usuario usuario = new Usuario();
+        usuario.setLogin(this.login);
+        usuario.setSenha(this.senha);
+        return usuario;
     }
 }

@@ -7,7 +7,6 @@ import br.com.facilitareabi.model.Paciente;
  */
 public class PacienteResponseDTO {
 
-
     private String nome;
     private String cpf;
     private String vulnerabilidade;

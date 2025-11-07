@@ -38,7 +38,10 @@ public class UsuarioResponseDTO {
      * @return DTO correspondente
      */
     public UsuarioResponseDTO convertToUsuarioResponseDto(Usuario usuario){
-        return new UsuarioResponseDTO(usuario.getLogin(), usuario.getFeedback());
+        UsuarioResponseDTO dto = new UsuarioResponseDTO();
+        dto.setLogin(usuario.getLogin()); // ← aqui dá erro se 'usuario' for null
+        dto.setFeedback(usuario.getFeedback());
+        return dto;
     }
 
     /**
@@ -48,6 +51,7 @@ public class UsuarioResponseDTO {
      * @return Objeto Usuario correspondente
      */
     public Usuario convertToUsuario(UsuarioResponseDTO dto){
+
         return new Usuario(dto.login, dto.feedback);
     }
 }

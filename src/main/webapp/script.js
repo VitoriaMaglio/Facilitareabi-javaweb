@@ -8,4 +8,3 @@ function testarConexao() {
       console.error("Erro:", error);
     });
 }
-

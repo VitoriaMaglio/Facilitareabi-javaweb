@@ -3,7 +3,6 @@ package br.com.facilitareabi.dao;
 import br.com.facilitareabi.enums.StatusConsultaEnum;
 import br.com.facilitareabi.model.Consulta;
 import br.com.facilitareabi.model.Paciente;
-
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,8 +12,6 @@ import java.util.List;
  * Cada método interage com a tabela "consulta" no banco de dados usando JDBC.
  */
 public class ConsultaDao {
-
-
     private Connection conn;
     public ConsultaDao() {
         this.conn = ConnectionFactory.obterConexao();
@@ -44,7 +41,6 @@ public class ConsultaDao {
             }
         }
     }
-
     /**
      * Busca uma consulta por data.
      *
@@ -77,7 +73,6 @@ public class ConsultaDao {
         }
         return consulta;
         }
-
     /**
      * Atualiza os dados de uma consulta existente.
      *
@@ -100,7 +95,6 @@ public class ConsultaDao {
             }
         }
     }
-
     /**
      * Exclui uma consulta pelo ID.
      *

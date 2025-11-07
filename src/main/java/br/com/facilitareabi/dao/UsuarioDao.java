@@ -14,9 +14,7 @@ import java.util.List;
  * Cada método interage com a tabela "usuario" do banco de dados usando JDBC.
  */
 public class UsuarioDao {
-
     private  Connection conn;
-
     public UsuarioDao() {
         this.conn = ConnectionFactory.obterConexao();
     }
@@ -42,7 +40,6 @@ public class UsuarioDao {
             }
         }
     }
-
     /**
      * Busca um usuário pelo login.
      *
@@ -65,7 +62,6 @@ public class UsuarioDao {
         }
         return null;
     }
-
     /**
      * Lista todos os usuários cadastrados.
      *
@@ -87,7 +83,6 @@ public class UsuarioDao {
             return usuarios;
         }
     }
-
     /**
      * Atualiza o feedback de um usuário específico.
      *
@@ -104,7 +99,6 @@ public class UsuarioDao {
 
         }
     }
-
     /**
      * Altera dados de login e senha de um usuário existente.
      *
@@ -120,7 +114,6 @@ public class UsuarioDao {
             comandoSQL.executeUpdate();
         }
     }
-
     /**
      * Exclui um usuário pelo login.
      *
@@ -139,7 +132,6 @@ public class UsuarioDao {
             }
         }
     }
-
     /**
      * Autentica um usuário comparando a senha informada com a senha criptografada no banco.
      *
@@ -147,7 +139,7 @@ public class UsuarioDao {
      * @return Mensagem de sucesso ou erro
      */
     public String autenticarUsuario(Usuario usuario) {
-        String sql = "SELECT * FROM tb_usuario WHERE login = ? ";
+        String sql = "SELECT * FROM USUARIO WHERE login = ? ";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, usuario.getLogin());
             ResultSet rs = ps.executeQuery();
@@ -164,5 +156,3 @@ public class UsuarioDao {
         }
     }
 }
-
-

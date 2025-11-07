@@ -17,7 +17,6 @@ public class PasswordHash {
         String senhaCriptografada = BCrypt.hashpw(senha, salt);
         return senhaCriptografada;
     }
-
     /**
      * Verifica se a senha fornecida corresponde ao hash armazenado.
      *
@@ -26,6 +25,7 @@ public class PasswordHash {
      * @return true se corresponder, false caso contrário
      */
     public static boolean verificarSenha(String senha, String hashPassword){
+
         return BCrypt.checkpw(senha, hashPassword);
     }
 

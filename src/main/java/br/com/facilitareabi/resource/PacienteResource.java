@@ -23,8 +23,6 @@ import java.util.List;
 @Path("pacientes")
 public class PacienteResource {
 
-    PacienteDao pacienteDao = new PacienteDao();
-    Paciente paciente = new Paciente();
     private PacienteService pacienteService = new PacienteService();
     /**
      * Cadastra um novo paciente no sistema.

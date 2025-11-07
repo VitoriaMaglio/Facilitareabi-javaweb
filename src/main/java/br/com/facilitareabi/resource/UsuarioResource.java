@@ -4,12 +4,11 @@ import br.com.facilitareabi.dao.UsuarioDao;
 import br.com.facilitareabi.dto.UsuarioLoginDto;
 import br.com.facilitareabi.dto.UsuarioRequestDTO;
 import br.com.facilitareabi.dto.UsuarioResponseDTO;
+import br.com.facilitareabi.model.Usuario;
 import br.com.facilitareabi.service.UsuarioService;
-
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
 import java.sql.SQLException;
 import java.util.List;
 /**
@@ -22,8 +21,6 @@ import java.util.List;
 public class UsuarioResource {
 
     private UsuarioService usuarioService = new UsuarioService();
-
-
 
     /**
      * Cadastra um novo recurso usuário no sistema.
@@ -48,14 +45,16 @@ public class UsuarioResource {
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
         } catch (SQLException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao cadastrar usuário: " + e.getMessage()) // <<< também envia pro Postman
+                    .build();
         }
     }
 
     /**
      * Realiza a autenticação de um usuário já cadastrado.
      *
-     * @param usuario DTO contendo login e senha
      * @return Response HTTP:
      * - 201 CREATED se a autenticação for bem-sucedida
      * - 400 BAD_REQUEST se login ou senha forem inválidos
@@ -66,25 +65,29 @@ public class UsuarioResource {
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login(UsuarioLoginDto usuario) {
+    public Response login(UsuarioLoginDto usuariodto) {
         try {
+            Usuario usuario = usuariodto.convertToUsuario();
             String mensagem = usuarioService.autenticarUsuario(usuario);
             if (mensagem.equals("Usuário logado com sucesso")) {
-                return Response.status(Response.Status.CREATED).build();
+                return Response.status(Response.Status.OK).entity(mensagem).build();
             } else if (mensagem.equals("Usuário e/ou senha inválidos")) {
-                return Response.status(Response.Status.BAD_REQUEST).build();
+                return Response.status(Response.Status.UNAUTHORIZED).entity(mensagem).build();
+            }else {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity(mensagem)
+                        .build();
             }
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao autenticar usuário  " + e.getMessage())
                     .build();
         }
-        return null;
+
     }
 
     /**
      * Lista todos os usuários cadastrados no sistema.
-     *
      * @return Response HTTP:
      * - 200 OK com a lista de usuários
      * - 500 INTERNAL_SERVER_ERROR em caso de erro no banco
@@ -153,7 +156,6 @@ public class UsuarioResource {
                     .entity("Erro ao atualizar usuário: " + e.getMessage()).build();
         }
     }
-
 
     /**
      * Exclui um usuário do sistema.

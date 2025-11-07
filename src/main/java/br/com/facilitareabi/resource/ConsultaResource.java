@@ -6,15 +6,11 @@ import br.com.facilitareabi.dto.ConsultaResponseDTO;
 
 import br.com.facilitareabi.service.ConsultaService;
 import br.com.facilitareabi.service.ConsultaServiceImpl;
-
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
-
 import java.sql.SQLException;
 import java.util.List;
-
 
 /**
  * Classe representando um recurso REST para gerenciamento de consultas.
@@ -59,7 +55,7 @@ public class ConsultaResource {
      */
 
     @GET
-    @Path("/{cadastradas}")
+    //@Path("/{cadastradas}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response listarConsultas() {
         try {

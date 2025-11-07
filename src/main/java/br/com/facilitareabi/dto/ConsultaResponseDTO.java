@@ -71,7 +71,6 @@ public class ConsultaResponseDTO {
         return new ConsultaResponseDTO(consulta.getDataConsulta(),consulta.getStatusConsulta(), consulta.getEspecializacao(), consulta.getPaciente());
     }
 
-
     /**
      * Converte este DTO em objeto Usuario.
      *
