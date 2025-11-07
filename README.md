@@ -83,7 +83,7 @@ O sistema adota uma **arquitetura em camadas, garantindo separação de responsa
 | `/pacientes/{id_paciente}` | PUT | 200 OK / 500 Internal Server Error |
 | `/pacientes/{nome}` | DELETE | 200 OK / 500 Internal Server Error |
 | `/consultas` | POST | 201 Created / 400 Bad Request / 500 Internal Server Error |
-| `/consultas/cadastradas` | GET | 200 OK / 500 Internal Server Error |
+| `/consultas` | GET | 200 OK / 500 Internal Server Error |
 | `/consultas/{id}` | PUT | 200 OK / 500 Internal Server Error |
 | `/consultas/{id}` | DELETE | 200 OK / 500 Internal Server Error |
 
