@@ -114,7 +114,7 @@ O sistema adota uma **arquitetura em camadas, garantindo separação de responsa
 4. Compile e execute a aplicação
    
 5.Acesse os endpoints via Postman em:
-  http://localhost:8080
+  http://localhost:8080/ddd-facilitareabijavaweb/
 
   👩‍💻 Autora
 Vitória Valentina Maglio
