@@ -38,8 +38,7 @@ public class PacienteResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response cadastrarPaciente(PacienteRequestDTO request) {
         try {
-            pacienteService.cadastrarPaciente(request);//chama o service resp por salvar no banco de dados
-
+            pacienteService.cadastrarPaciente(request);
             PacienteResponseDTO cadastrado = pacienteService.buscarPorNome(request.getNome());
             if (cadastrado != null) {
                 return Response.status(Response.Status.CREATED).build();
